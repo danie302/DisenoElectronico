@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Truck tracker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+    <style>
+        #map{
+            height: 300px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Truck Tracker</h1>
+    <div id="map"></div>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaUgFuVypDeWug-2htEXKEssI7TpifSg8&callback=initMap">
+    </script>
+</body>
+</html>
+
+
+<script>
+        let now;
+        let msg;
+        let nWeeks, day, time, lon, lat;
+        function fetchData() {
+          fetch("/coord") // Fetching the data from the server
+          .then(function (res) {
+              return res.json();
+          })
+          .then(data => {
+          now = new Date(); // To get the internal date
+          console.log(data);
+          // >REV002041663724+1099304-0748281400000032;ID=AVENGERS<
+          msg = data.split(""); // Split the data to be decoded
+          nWeeks = `${msg[6]}${msg[7]}${msg[8]}${msg[9]}`; // Number of weeks since 00:00 AM January 6, 1980
+          day = `${msg[10]}`; // Day of week. From 0 to 6 where 0 is Sunday.
+          time = `${msg[11]}${msg[12]}${msg[13]}${msg[14]}${msg[15]}`; // Time of the generated report. Seconds since 00:00 of the current date.
+          lat = `${msg[16]}${msg[17]}${msg[18]}.${msg[19]}${msg[20]}${msg[21]}${msg[22]}${msg[23]}`;
+          lon = `${msg[24]}${msg[25]}${msg[26]}${msg[27]}.${msg[28]}${msg[29]}${msg[30]}${msg[31]}${msg[32]}`;
+          //
+          })
+        }
+        
+        function go () {
+            fetchData();
+            setTimeout(go, 1000); // callback
+        }
+        go();
+        function initMap(){
+            // Variables
+            let  lati = parseFloat(lat), longi = parseFloat(lon);
+            console.log(lati);
+            console.log(longi);  
+
+            // Map options
+            let opt = {
+                zoom: 15,
+                center: {lat: lati, lng: longi}
+            }
+            // Creating the map
+            let map = new google.maps.Map(document.getElementById("map"), opt);
+            // Creating the marker
+            let marker = new google.maps.Marker({
+                position: {lat: lati, lng: longi},
+                map: map
+            })
+        }
+      </script>
