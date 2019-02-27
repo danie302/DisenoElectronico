@@ -44,7 +44,7 @@
         let time = document.getElementById("Time");
         let now;
         let msg;
-        let nWeeks, day, time, lon, lat, map, marker; 
+        let nWeeks, day, times, lon, lat, map, marker; 
         let markers = [];
         lat = 10.99304;
         lon = -74.8281;
@@ -68,7 +68,7 @@
           msg = data.split(""); // Split the data to be decoded
           nWeeks = `${msg[6]}${msg[7]}${msg[8]}${msg[9]}`; // Number of weeks since 00:00 AM January 6, 1980
           day = `${msg[10]}`; // Day of week. From 0 to 6 where 0 is Sunday.
-          time = `${msg[11]}${msg[12]}${msg[13]}${msg[14]}${msg[15]}`; // Time of the generated report. Seconds since 00:00 of the current date.
+          times = `${msg[11]}${msg[12]}${msg[13]}${msg[14]}${msg[15]}`; // Time of the generated report. Seconds since 00:00 of the current date.
           lat = `${msg[16]}${msg[17]}${msg[18]}.${msg[19]}${msg[20]}${msg[21]}${msg[22]}${msg[23]}`;
           lon = `${msg[24]}${msg[25]}${msg[26]}${msg[27]}.${msg[28]}${msg[29]}${msg[30]}${msg[31]}${msg[32]}`;
           //
