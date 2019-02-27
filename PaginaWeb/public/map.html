@@ -66,7 +66,7 @@
         
         function initMap(){
             // Variables
-            console.log(parseFloat(lati));
+            console.log(parseFloat(lat));
             console.log(parseFloat(lon));  
             // Map options
             let opt = {
@@ -106,7 +106,7 @@
                 a = a + 0.001;
                 b = b - 0.001;
                 deleteMarkers();
-                addMarker({lat: parseFloat(lati), lng: parseFloat(lon)});
+                addMarker({lat: parseFloat(lat), lng: parseFloat(lon)});
                 setTimeout(actMap, 1000);
             }
             actMap()
