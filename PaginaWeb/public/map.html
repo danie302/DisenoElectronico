@@ -42,8 +42,8 @@
         let msg;
         let nWeeks, day, time, lon, lat, map, marker; 
         let markers = [];
-        lat = +10.9878;
-        lon = -74.7889;
+        lat = 10.99304;
+        lon = -74.8281;
 
         function act(long, lat, dat, tim) {
             longitude.innerText = `Longitude: ${long}`;
@@ -111,9 +111,9 @@
             }
 
             function actMap(){
-                deleteMarkers();
+                clearMarkers();
                 addMarker({lat: parseFloat(lat), lng: parseFloat(lon)});
-                setTimeout(actMap, 1000);
+                setTimeout(actMap, 500);
             }
             actMap()
         }
