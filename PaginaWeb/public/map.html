@@ -61,19 +61,20 @@
           lon = `${msg[24]}${msg[25]}${msg[26]}${msg[27]}.${msg[28]}${msg[29]}${msg[30]}${msg[31]}${msg[32]}`;
           //
           act(`${lon}`,`${lat}`,`${now.getDay()}/${now.getMonth()}/${now.getFullYear()}`, `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`);
+          let  lati = parseFloat(lat), longi = parseFloat(lon);
           })
         }
         
         function initMap(){
             // Variables
-            let  lati = parseFloat(lat), longi = parseFloat(lon);
+            
             
             console.log(lati);
             console.log(longi);  
             // Map options
             let opt = {
                 zoom: 15,
-                center: {lat: lat, lng: lon}
+                center: {lat: lati, lng: longi}
             }
             // Creating the map
             map = new google.maps.Map(document.getElementById("map"), opt);
@@ -108,7 +109,7 @@
                 a = a + 0.001;
                 b = b - 0.001;
                 deleteMarkers();
-                addMarker({lat: lat, lng: lon});
+                addMarker({lat: lati, lng: longi});
                 setTimeout(actMap, 1000);
             }
             actMap()
