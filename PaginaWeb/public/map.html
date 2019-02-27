@@ -42,8 +42,8 @@
         let msg;
         let nWeeks, day, time, lon, lat, map, marker; 
         let markers = [];
-        let a = +10.9878;
-        let b = -74.7889;
+        lat = +10.9878;
+        lon = -74.7889;
         function fetchData() {
           fetch("/coord") // Fetching the data from the server
           .then(function (res) {
@@ -103,8 +103,6 @@
             }
 
             function actMap(){
-                a = a + 0.001;
-                b = b - 0.001;
                 deleteMarkers();
                 addMarker({lat: parseFloat(lat), lng: parseFloat(lon)});
                 setTimeout(actMap, 1000);
