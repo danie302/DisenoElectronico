@@ -44,6 +44,14 @@
         let markers = [];
         lat = +10.9878;
         lon = -74.7889;
+
+        function act(long, lat, dat, tim) {
+            longitude.innerText = `Longitude: ${long}`;
+            latitude.innerText = `Latitude: ${lat}`;
+            date.innerText = `Date: ${dat}`;
+            time.innerText = `Time: ${tim}`;
+        }
+
         function fetchData() {
           fetch("/coord") // Fetching the data from the server
           .then(function (res) {
@@ -108,12 +116,6 @@
                 setTimeout(actMap, 1000);
             }
             actMap()
-        }
-        function act(long, lat, dat, tim) {
-            longitude.innerText = `Longitude: ${long}`;
-            latitude.innerText = `Latitude: ${lat}`;
-            date.innerText = `Date: ${dat}`;
-            time.innerText = `Time: ${tim}`;
         }
 
         function go () {
