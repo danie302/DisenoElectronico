@@ -16,6 +16,20 @@
 <body>
     <h1>Truck Tracker</h1>
     <div id="map"></div>
+    <div class="GPS-Box">
+        <div id="Long" class="Coordinates">
+          Longitude:
+        </div>
+        <div id="Lat" class="Coordinates">
+          Latitude:
+        </div>
+        <div id="Date" class="Coordinates">
+          Date:
+        </div>
+        <div id="Time" class="Coordinates">
+          Time:
+        </div>
+      </div>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaUgFuVypDeWug-2htEXKEssI7TpifSg8&callback=initMap">
     </script>
@@ -26,7 +40,10 @@
 <script>
         let now;
         let msg;
-        let nWeeks, day, time, lon, lat;
+        let nWeeks, day, time, lon, lat, map, marker; 
+        let markers = [];
+        let a = +10.9878;
+        let b = -74.7889;
         function fetchData() {
           fetch("/coord") // Fetching the data from the server
           .then(function (res) {
@@ -46,28 +63,60 @@
           })
         }
         
-        function go () {
-            fetchData();
-            setTimeout(go, 1000); // callback
-        }
-        go();
         function initMap(){
             // Variables
             let  lati = parseFloat(lat), longi = parseFloat(lon);
+            
             console.log(lati);
             console.log(longi);  
-
             // Map options
             let opt = {
                 zoom: 15,
-                center: {lat: lati, lng: longi}
+                center: {lat: a, lng: b}
             }
             // Creating the map
-            let map = new google.maps.Map(document.getElementById("map"), opt);
+            map = new google.maps.Map(document.getElementById("map"), opt);
             // Creating the marker
-            let marker = new google.maps.Marker({
-                position: {lat: lati, lng: longi},
-                map: map
-            })
+            function addMarker(coord){
+                marker = new google.maps.Marker({
+                    position: coord,
+                    map: map
+                })
+                markers.push(marker);
+            }
+
+            function setMapOnAll(map) {
+                for (var i = 0; i < markers.length; i++) {
+                    markers[i].setMap(map);
+                }
+            }
+            function clearMarkers() {
+                setMapOnAll(null);
+            }
+
+            function showMarkers() {
+                setMapOnAll(map);
+            }
+
+            function deleteMarkers() {
+                clearMarkers();
+                markers = [];
+            }
+
+            function actMap(){
+                a = a + 0.001;
+                b = b - 0.001;
+                deleteMarkers();
+                addMarker({lat: a, lng: b});
+                setTimeout(actMap, 1000);
+            }
+            actMap()
         }
+
+        function go () {
+            fetchData();
+            setTimeout(go, 500); // callback
+        }
+        go();
+        
       </script>
