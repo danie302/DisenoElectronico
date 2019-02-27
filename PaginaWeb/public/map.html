@@ -60,6 +60,7 @@
           lat = `${msg[16]}${msg[17]}${msg[18]}.${msg[19]}${msg[20]}${msg[21]}${msg[22]}${msg[23]}`;
           lon = `${msg[24]}${msg[25]}${msg[26]}${msg[27]}.${msg[28]}${msg[29]}${msg[30]}${msg[31]}${msg[32]}`;
           //
+          act(`${lon}`,`${lat}`,`${now.getDay()}/${now.getMonth()}/${now.getFullYear()}`, `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`);
           })
         }
         
@@ -72,7 +73,7 @@
             // Map options
             let opt = {
                 zoom: 15,
-                center: {lat: a, lng: b}
+                center: {lat: lat, lng: lon}
             }
             // Creating the map
             map = new google.maps.Map(document.getElementById("map"), opt);
@@ -107,10 +108,16 @@
                 a = a + 0.001;
                 b = b - 0.001;
                 deleteMarkers();
-                addMarker({lat: a, lng: b});
+                addMarker({lat: lat, lng: lon});
                 setTimeout(actMap, 1000);
             }
             actMap()
+        }
+        function act(long, lat, dat, tim) {
+            longitude.innerText = `Longitude: ${long}`;
+            latitude.innerText = `Latitude: ${lat}`;
+            date.innerText = `Date: ${dat}`;
+            time.innerText = `Time: ${tim}`;
         }
 
         function go () {
