@@ -82,7 +82,7 @@
             console.log(parseFloat(lon));  
             // Map options
             let opt = {
-                zoom: 25,
+                zoom: 18,
                 center: {lat: parseFloat(lat), lng: parseFloat(lon)}
             }
             // Creating the map
@@ -115,8 +115,9 @@
             }
 
             function actMap(){
-                clearMarkers();
+                deleteMarkers();
                 addMarker({lat: parseFloat(lat), lng: parseFloat(lon)});
+                map.setCenter(marker.getPosition());
                 setTimeout(actMap, 500);
             }
             actMap()
