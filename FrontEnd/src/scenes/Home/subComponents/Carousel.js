@@ -35,10 +35,10 @@ export class Carousel extends Component {
 				}
 			],
 			image: {
-				url: gpstrack,
-				title: "Image 3",
-				text: "This is the third image",
-				index: 2
+				url: img1,
+				title: "Image 1",
+				text: "This is the first image",
+				index: 0
 			}
 		};
 		this.nextImage = this.nextImage.bind(this);
