@@ -17,7 +17,6 @@ export class GPS extends Component {
 			lon: this.state.lon + 0.0001,
 			lat: this.state.lat + 0.0001
 		});
-		console.log(this.state.lon);
 	}
 
 	render() {
@@ -25,16 +24,15 @@ export class GPS extends Component {
 			width: "60%",
 			height: "60%",
 			position: "relative",
-			left: "25%"
+			left: "20%"
 		};
 		return (
-			<div className="MapWrapper">
+			<div>
 				<div className="Box">
-					<input placeholder="ID del camion" class="Box--Search" />
+					<input placeholder="ID del camion" className="Box--Search" />
 					<div className="Box--Button">Seguir</div>
 				</div>
 				<Map
-					className="Map"
 					style={style}
 					google={this.props.google}
 					zoom={this.state.zoom}
