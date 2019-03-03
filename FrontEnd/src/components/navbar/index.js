@@ -41,7 +41,7 @@ class Navbar extends Component {
           icon={"fa-users"}
         />
         <LinkMobileButton
-          push={this.navClick.bind(this, "/catalog")}
+          push={this.navClick.bind(this, "/gps")}
           name={"GPS"}
           icon={"fa-tags"}
         />
@@ -80,7 +80,7 @@ class Navbar extends Component {
             icon={"fa-users"}
           />
           <LinkButton
-            push={this.navClick.bind(this, "/catalog")}
+            push={this.navClick.bind(this, "/gps")}
             name={"GPS"}
             icon={"fa-globe"}
           />
