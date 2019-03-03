@@ -6,7 +6,8 @@ export class GPS extends Component {
     state = {
         selectedPlace: "Hawai",
         lat: 10.99304,
-        lon: -74.8281
+        lon: -74.8281,
+        zoom: 18
     }
     onMouseMove(){
         this.setState({
@@ -14,18 +15,22 @@ export class GPS extends Component {
             lat: this.state.lat + 0.0001
         })
         console.log(this.state.lon);
-        
     }
+
   render() {
     return (
       <Map 
       google={this.props.google}
-      zoom={14} 
+      zoom={this.state.zoom} 
       onMousemove={this.onMouseMove.bind(this)}
       initialCenter={{
         lat: this.state.lat,
         lng: this.state.lon
       }} 
+      center= {{
+          lat: this.state.lat,
+          lng:this.state.lon
+      }}
       >
         <Marker onClick={this.onMarkerClick} name={'Current location'} position={{lat: this.state.lat, lng: this.state.lon}} />
       </Map>
