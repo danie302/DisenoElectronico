@@ -35,6 +35,7 @@ export class Contact extends Component {
 			phone: this.state.phone,
 			message: this.state.message
 		};
+		console.log(message);
 	}
 
 	render() {

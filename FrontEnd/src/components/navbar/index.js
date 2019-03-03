@@ -5,6 +5,9 @@ import { withRouter } from "react-router-dom";
 // Styles
 import "./navbar.scss";
 
+// Assets
+import Logo from "../../images/img1.png";
+
 class Navbar extends Component {
 	state = {
 		mobile: true
@@ -55,7 +58,7 @@ class Navbar extends Component {
 				<div className={"Navbar-Main"}>
 					<img
 						className={"Navbar-Main--Logo"}
-						src=""
+						src={Logo}
 						alt="Truck Tracker Logo"
 					/>
 					<div className={"Navbar-Main--Contact"}>
