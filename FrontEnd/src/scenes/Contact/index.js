@@ -43,8 +43,8 @@ export class Contact extends Component {
 				<div className={"Contact"}>
 					<span className={"Contact--Title"}>Contáctanos</span>
 					<p className={"Contact--Desc"}>
-						Siempre atentos para brindarte el mejor servicio posible de acuerdo
-						sus necesidades e inquietudes.
+						Siempre atentos para brindarte el mejor servicio de localización en
+						tiempo real.
 					</p>
 					<div className={"Contact--Holder"}>
 						<div className={"Contact--Holder--Info"}>
