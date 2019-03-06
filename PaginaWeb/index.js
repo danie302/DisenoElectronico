@@ -39,9 +39,7 @@ server.on("listening", () => {
 
 app.use("/gps", gps);
 
-app.get("/", function(req, res) {
-	res.sendFile(path.join(__dirname + "/public/index.html"));
-});
+app.use(express.static(path.join(__dirname, "public/build")));
 
 app.get("/map", function(req, res) {
 	res.sendFile(path.join(__dirname + "/public/map.html"));
