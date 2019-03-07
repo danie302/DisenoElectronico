@@ -9,7 +9,7 @@ var mysql = require("mysql"),
 	});
 
 //creamos un objeto para ir almacenando todo lo que necesitemos
-var gpsModel = {};
+let gpsModel = {};
 
 //obtenemos todos los usuarios
 gpsModel.getRasters = function(callback) {

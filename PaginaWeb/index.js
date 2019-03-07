@@ -18,17 +18,10 @@ server.on("message", (msg, rinfo) => {
 	if (d != null) {
 		let gpsData = {
 			id: null,
-			syrusID: "Avangers",
+			syrusID: "Avengers",
 			gpsTrama: msg
 		};
-		gpsModel.insertRaster(gpsData, function(error, data) {
-			//si el usuario se ha insertado correctamente mostramos su info
-			// if (data && data.insertId) {
-			// 	console.log("/users/" + data.insertId);
-			// } else {
-			// 	console.log({ msg: "Error" });
-			// }
-		});
+		gpsModel.insertRaster(gpsData, null);
 	}
 });
 

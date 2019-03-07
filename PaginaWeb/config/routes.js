@@ -6,16 +6,16 @@ var gpsModel = require("../models/syrusTracking");
 //creamos el ruteo de la aplicación
 
 //mostramos todos los usuarios
-router.get("/users", function(req, res) {
+router.get("/rasters", function(req, res) {
 	gpsModel.getRasters(function(error, data) {
 		res.json(200, data);
 	});
 });
 
 //obtiene un usuario por su id
-router.get("/users/:id", function(req, res) {
+router.get("/raster/:id", function(req, res) {
 	//id del usuario
-	var id = req.params.id;
+	let id = req.params.id;
 	//solo actualizamos si la id es un número
 	if (!isNaN(id)) {
 		gpsModel.getRaster(id, function(error, data) {
@@ -39,7 +39,7 @@ router.get("/users/:id", function(req, res) {
 router.post("/newRaster", function(req, res) {
 	//creamos un objeto con los datos a insertar del usuario
 	// INSERT INTO `gps`.`GPS-Tracking` (`id`, `Syrus ID`, `GPS-Trama`) VALUES ('1', 'Avengers', '>REV002041663724+1099304-0748281400000032;ID=AVENGERS<');
-	var userData = {
+	let userData = {
 		id: null,
 		syrusID: req.body.syrusID,
 		gpsTrama: req.body.gpsTrama
