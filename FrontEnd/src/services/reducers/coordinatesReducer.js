@@ -4,17 +4,17 @@
 import { FETCH_DATA } from "../actions/types";
 
 const initialState = {
-  message: ""
+	coord: {}
 };
 
 export default function(state = initialState, action) {
-  switch (action.type) {
-    case FETCH_DATA:
-      return {
-        ...state,
-        message: action.payload
-      };
-    default:
-      return state;
-  }
+	switch (action.type) {
+		case FETCH_DATA:
+			return {
+				...state,
+				coord: action.payload
+			};
+		default:
+			return state;
+	}
 }

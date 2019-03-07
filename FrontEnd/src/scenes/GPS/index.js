@@ -1,62 +1,80 @@
 // Dependencies
 import React, { Component } from "react";
-import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+
+// Components
+import GPSMap from "./gps";
+
+// Import actions
+import { fetchCoord } from "../../services/actions/coordinatesActions";
 
 // Styles
 import "./gps.scss";
 
 export class GPS extends Component {
-	state = {
-		selectedPlace: "Hawai",
-		lat: 10.99304,
-		lon: -74.8281,
-		zoom: 18
-	};
-	onMouseMove() {
-		this.setState({
-			lon: this.state.lon + 0.0001,
-			lat: this.state.lat + 0.0001
-		});
+	constructor(props) {
+		super(props);
+		this.state = {
+			lat: 10.99304,
+			lon: -74.8281
+		};
 	}
 
+	componentWillMount() {
+		fetch("/coord")
+			.then(res => {
+				return res.json();
+			})
+			.then(data => {
+				data = JSON.parse(data);
+				this.setState({
+					lat: data.lat,
+					lon: data.lon
+				});
+			})
+			.catch(err => {
+				console.log(err);
+			});
+	}
+	componentDidMount() {
+		fetch("/coord")
+			.then(res => {
+				return res.json();
+			})
+			.then(data => {
+				data = JSON.parse(data);
+				console.log("act");
+				this.setState({
+					lat: data.lat,
+					lon: data.lon
+				});
+			})
+			.catch(err => {
+				console.log(err);
+			});
+	}
 	render() {
-		const style = {
-			width: "60%",
-			height: "60%",
-			position: "relative",
-			left: "20%"
-		};
 		return (
 			<div>
-				<div className="Box">
-					<input placeholder="ID del camion" className="Box--Search" />
-					<div className="Box--Button">Seguir</div>
-				</div>
-				<Map
-					style={style}
-					google={this.props.google}
-					zoom={this.state.zoom}
-					onMousemove={this.onMouseMove.bind(this)}
-					initialCenter={{
-						lat: this.state.lat,
-						lng: this.state.lon
-					}}
-					center={{
-						lat: this.state.lat,
-						lng: this.state.lon
-					}}
-				>
-					<Marker
-						onClick={this.onMarkerClick}
-						name={"Current location"}
-						position={{ lat: this.state.lat, lng: this.state.lon }}
-					/>
-				</Map>
+				<GPSMap lat={this.state.lat} lon={this.state.lat} />
 			</div>
 		);
 	}
 }
 
-export default GoogleApiWrapper({
-	apiKey: "AIzaSyAaUgFuVypDeWug-2htEXKEssI7TpifSg8"
-})(GPS);
+GPS.propTypes = {
+	fetchCoord: PropTypes.func.isRequired,
+	lat: PropTypes.object.isRequired,
+	coordinates: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+	lon: state.coordinates,
+	lat: state.lon
+});
+
+export default connect(
+	mapStateToProps,
+	{ fetchCoord }
+)(GPS);

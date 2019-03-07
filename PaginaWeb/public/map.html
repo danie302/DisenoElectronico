@@ -1,132 +1,132 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Truck tracker</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
-    <style>
-        #map{
-            height: 300px;
-            width: 100%;
-        }
-    </style>
-</head>
-<body>
-    <h1>Truck Tracker</h1>
-    <div id="map"></div>
-    <div class="GPS-Box">
-        <div id="Long" class="Coordinates">
-          Longitude:
-        </div>
-        <div id="Lat" class="Coordinates">
-          Latitude:
-        </div>
-        <div id="Date" class="Coordinates">
-          Date:
-        </div>
-        <div id="Time" class="Coordinates">
-          Time:
-        </div>
-      </div>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaUgFuVypDeWug-2htEXKEssI7TpifSg8&callback=initMap">
-    </script>
-</body>
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>Truck tracker</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+		<style>
+			#map {
+				height: 300px;
+				width: 100%;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Truck Tracker</h1>
+		<div id="map"></div>
+		<div class="GPS-Box">
+			<div id="Long" class="Coordinates">
+				Longitude:
+			</div>
+			<div id="Lat" class="Coordinates">
+				Latitude:
+			</div>
+			<div id="Date" class="Coordinates">
+				Date:
+			</div>
+			<div id="Time" class="Coordinates">
+				Time:
+			</div>
+		</div>
+		<script
+			async
+			defer
+			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaUgFuVypDeWug-2htEXKEssI7TpifSg8&callback=initMap"
+		></script>
+	</body>
 </html>
 
-
 <script>
-        let longitude = document.getElementById("Long");
-        let latitude = document.getElementById("Lat");
-        let date = document.getElementById("Date");
-        let time = document.getElementById("Time");
-        let now;
-        let msg;
-        let nWeeks, day, times, lon, lat, map, marker; 
-        let markers = [];
-        lat = 10.99304;
-        lon = -74.8281;
+	let longitude = document.getElementById("Long");
+	let latitude = document.getElementById("Lat");
+	let date = document.getElementById("Date");
+	let time = document.getElementById("Time");
+	let now;
+	let msg;
+	let nWeeks, day, times, lon, lat, map, marker;
+	let markers = [];
+	lat = 10.99304;
+	lon = -74.8281;
 
-        function act(long, lat, dat, tim) {
-            longitude.innerText = `Longitude: ${long}`;
-            latitude.innerText = `Latitude: ${lat}`;
-            date.innerText = `Date: ${dat}`;
-            time.innerText = `Time: ${tim}`;
-        }
+	function act(long, lat, dat, tim) {
+		longitude.innerText = `Longitude: ${long}`;
+		latitude.innerText = `Latitude: ${lat}`;
+		date.innerText = `Date: ${dat}`;
+		time.innerText = `Time: ${tim}`;
+	}
 
-        function fetchData() {
-          fetch("/coord") // Fetching the data from the server
-          .then(function (res) {
-              return res.json();
-          })
-          .then(data => {
-          now = new Date(); // To get the internal date
-          console.log(data);
-          // >REV002041663724+1099304-0748281400000032;ID=AVENGERS<
-          msg = data.split(""); // Split the data to be decoded
-          nWeeks = `${msg[6]}${msg[7]}${msg[8]}${msg[9]}`; // Number of weeks since 00:00 AM January 6, 1980
-          day = `${msg[10]}`; // Day of week. From 0 to 6 where 0 is Sunday.
-          times = `${msg[11]}${msg[12]}${msg[13]}${msg[14]}${msg[15]}`; // Time of the generated report. Seconds since 00:00 of the current date.
-          lat = `${msg[16]}${msg[17]}${msg[18]}.${msg[19]}${msg[20]}${msg[21]}${msg[22]}${msg[23]}`;
-          lon = `${msg[24]}${msg[25]}${msg[26]}${msg[27]}.${msg[28]}${msg[29]}${msg[30]}${msg[31]}${msg[32]}`;
-          //
-          act(`${lon}`,`${lat}`,`${now.getDay()}/${now.getMonth()}/${now.getFullYear()}`, `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`);
-          })
-        }
-        
-        function initMap(){
-            // Variables
-            console.log(parseFloat(lat));
-            console.log(parseFloat(lon));  
-            // Map options
-            let opt = {
-                zoom: 18,
-                center: {lat: parseFloat(lat), lng: parseFloat(lon)}
-            }
-            // Creating the map
-            map = new google.maps.Map(document.getElementById("map"), opt);
-            // Creating the marker
-            function addMarker(coord){
-                marker = new google.maps.Marker({
-                    position: coord,
-                    map: map
-                })
-                markers.push(marker);
-            }
+	function fetchData() {
+		fetch("/coord") // Fetching the data from the server
+			.then(function(res) {
+				return res.json();
+			})
+			.then(data => {
+				now = new Date(); // To get the internal date
+				data = JSON.parse(data);
+				console.log(data);
+				lat = data.lat;
+				lon = data.lon;
+				act(
+					`${lon}`,
+					`${lat}`,
+					`${now.getDay()}/${now.getMonth()}/${now.getFullYear()}`,
+					`${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`
+				);
+			});
+	}
 
-            function setMapOnAll(map) {
-                for (var i = 0; i < markers.length; i++) {
-                    markers[i].setMap(map);
-                }
-            }
-            function clearMarkers() {
-                setMapOnAll(null);
-            }
+	function initMap() {
+		// Variables
+		console.log(parseFloat(lat));
+		console.log(parseFloat(lon));
+		// Map options
+		let opt = {
+			zoom: 18,
+			center: { lat: parseFloat(lat), lng: parseFloat(lon) }
+		};
+		// Creating the map
+		map = new google.maps.Map(document.getElementById("map"), opt);
+		// Creating the marker
+		function addMarker(coord) {
+			marker = new google.maps.Marker({
+				position: coord,
+				map: map
+			});
+			markers.push(marker);
+		}
 
-            function showMarkers() {
-                setMapOnAll(map);
-            }
+		function setMapOnAll(map) {
+			for (var i = 0; i < markers.length; i++) {
+				markers[i].setMap(map);
+			}
+		}
+		function clearMarkers() {
+			setMapOnAll(null);
+		}
 
-            function deleteMarkers() {
-                clearMarkers();
-                markers = [];
-            }
+		function showMarkers() {
+			setMapOnAll(map);
+		}
 
-            function actMap(){
-                deleteMarkers();
-                addMarker({lat: parseFloat(lat), lng: parseFloat(lon)});
-                map.setCenter(marker.getPosition());
-                setTimeout(actMap, 500);
-            }
-            actMap()
-        }
+		function deleteMarkers() {
+			clearMarkers();
+			markers = [];
+		}
 
-        function go () {
-            fetchData();
-            setTimeout(go, 500); // callback
-        }
-        go();
-        
-      </script>
+		function actMap() {
+			deleteMarkers();
+			addMarker({ lat: parseFloat(lat), lng: parseFloat(lon) });
+			map.setCenter(marker.getPosition());
+			setTimeout(actMap, 500);
+		}
+		actMap();
+	}
+
+	function go() {
+		fetchData();
+		setTimeout(go, 500); // callback
+	}
+	go();
+</script>

@@ -5,5 +5,5 @@ import { combineReducers } from "redux";
 import coordinatesReducer from "./coordinatesReducer";
 
 export default combineReducers({
-  coordinates: coordinatesReducer
+	coordinates: coordinatesReducer
 });
