@@ -21,7 +21,14 @@ server.on("message", (msg, rinfo) => {
 			syrusID: "Avengers",
 			gpsTrama: msg
 		};
-		gpsModel.insertRaster(gpsData, null);
+		gpsModel.insertRaster(gpsData, function(error, data) {
+			//si el usuario se ha insertado correctamente mostramos su info
+			// if (data && data.insertId) {
+			// 	console.log("/users/" + data.insertId);
+			// } else {
+			// 	console.log({ msg: "Error" });
+			// }
+		});
 	}
 });
 
