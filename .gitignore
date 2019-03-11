@@ -2,3 +2,5 @@
 /.profile
 /.bash_logout
 /.sudo_as_admin_successful
+/.cache
+/.ssh
