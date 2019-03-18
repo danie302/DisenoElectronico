@@ -14,7 +14,7 @@ let gpsModel = {};
 //obtenemos todos los usuarios
 gpsModel.getRasters = function(callback) {
 	if (connection) {
-		connection.query("SELECT * FROM `GPS-Tracking` ORDER BY id", function(
+		connection.query("SELECT * FROM `GPS-tracking` ORDER BY id", function(
 			error,
 			rows
 		) {
@@ -31,7 +31,7 @@ gpsModel.getRasters = function(callback) {
 gpsModel.getRaster = function(id, callback) {
 	if (connection) {
 		var sql =
-			"SELECT * FROM `GPS-Tracking` WHERE id = " + connection.escape(id);
+			"SELECT * FROM `GPS-tracking` WHERE id = " + connection.escape(id);
 		connection.query(sql, function(error, row) {
 			if (error) {
 				throw error;
@@ -46,7 +46,7 @@ gpsModel.getRaster = function(id, callback) {
 gpsModel.insertRaster = function(gpsData, callback) {
 	if (connection) {
 		// INSERT INTO `gps`.`GPS-Tracking` (`id`, `Syrus ID`, `GPS-Trama`) VALUES ('1', 'Avengers', '>REV002041663724+1099304-0748281400000032;ID=AVENGERS<');
-		connection.query("INSERT INTO `GPS-Tracking` SET ?", gpsData, function(
+		connection.query("INSERT INTO `GPS-tracking` SET ?", gpsData, function(
 			error,
 			result
 		) {
