@@ -1,0 +1,10 @@
+#idate {
+  position: absolute;
+  top: 70px;
+}
+#fdate {
+  position: absolute;
+  top: 130px;
+}
+
+<link rel="stylesheet" type="text/css" media="screen" href="main.css" />
