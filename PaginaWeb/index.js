@@ -47,6 +47,7 @@ server.on("message", (msg, rinfo) => {
 			// 	console.log({ msg: "Error" });
 			// }
 		});
+		data = JSON.stringify(data);
 	}
 });
 
@@ -75,7 +76,6 @@ app.get("/hist", (req, res) => {
 });
 
 app.get("/coord", (req, res) => {
-	data = JSON.stringify(data);
 	console.log(data);
 	res.json(`${data}`);
 });
