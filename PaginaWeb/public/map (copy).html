@@ -8,44 +8,15 @@
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
     <style>
       #map {
-        position: absolute;
-        height: 550px;
-        width: 1050px;
-        left: 250px;
-        top: 80px;
+        height: 300px;
+        width: 100%;
       }
     </style>
   </head>
   <body>
-    <h1 style="text-align: center">Truck Tracker</h1>
-    <div>
-      <form>
-        <label>Id number: </label><br />
-        <input type="text" id="clientid" /><br />
-      </form>
-    </div>
-    <div>
-      <form style="position:absolute;top:130px">
-        <label>Initial Date: </label><br />
-        <input type="datetime-local" id="idate" /><br />
-      </form>
-    </div>
-    <div>
-      <form style="position:absolute;top:190px">
-        <label>Final Date: </label><br />
-        <input type="datetime-local" id="fdate" /><br />
-      </form>
-    </div>
-
-    <button style="position:absolute;top:240px" onclick="daterange()">
-      Submit
-    </button>
-    <div style="position:absolute;top:260px">
-      <p id="demo"></p>
-    </div>
-
+    <h1>Truck Tracker</h1>
     <div id="map"></div>
-    <div class="GPS-Box" style="position:absolute;top:390px">
+    <div class="GPS-Box">
       <div id="Long" class="Coordinates">
         Longitude:
       </div>
@@ -68,16 +39,6 @@
 </html>
 
 <script>
-  function daterange() {
-    var clientid = document.getElementById("clientid").value;
-    var idate = document.getElementById("idate").value;
-    var fdate = document.getElementById("fdate").value;
-    document.getElementById(
-      "demo"
-    ).innerHTML = `Historical Range user ${clientid} :<br>\
-    from: ${idate} <br>\ to: ${fdate}  `;
-  }
-
   let longitude = document.getElementById("Long");
   let latitude = document.getElementById("Lat");
   let date = document.getElementById("Date");

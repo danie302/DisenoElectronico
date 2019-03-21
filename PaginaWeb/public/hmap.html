@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
@@ -16,21 +17,22 @@
     </style>
   </head>
   <body>
-    <h1 style="text-align:center">Truck Tracker</h1>
-    <div id="idate">
+    <h1>Truck Tracker</h1>
+    <div>
       <form>
         <label>Date: </label>
-        <input type="datetime-local" /><br />
-        <input type="Submit" />
+        <input type="datetime-local" id="idate" /><br />
       </form>
     </div>
-    <div id="fdate">
+    <div>
       <form>
         <label>Date: </label>
-        <input type="datetime-local" /><br />
-        <input type="Submit" />
+        <input type="datetime-local" id="fdate" /><br />
       </form>
     </div>
+    <button onclick="daterange()">ok</button>
+    <p id="idemo"></p>
+    <p id="fdemo"></p>
     <div id="map"></div>
     <div class="GPS-Box">
       <div id="Long" class="Coordinates">
@@ -55,6 +57,11 @@
 </html>
 
 <script>
+  function daterange() {
+    var x = document.getElementById("idate").value;
+    document.getElementById("idemo").innerHTML = x;
+  }
+
   let longitude = document.getElementById("Long");
   let latitude = document.getElementById("Lat");
   let date = document.getElementById("Date");
