@@ -31,6 +31,17 @@ app.get("/map", function(req, res) {
 	res.sendFile(path.join(__dirname + "/public/map.html"));
 });
 
+app.get("/hist", (req, res) => {
+	let data = {
+		fDate: req.fDate,
+		lDate: req.lDate,
+		fHour: req.fHour,
+		lHour: req.lHour
+	};
+	let bounds;
+	res.json(bounds);
+});
+
 app.get("/coord", (req, res) => {
 	if (d != null) {
 		let nWeeks, time, lon, lat, newMsg, data, ID;
