@@ -5,7 +5,7 @@ const path = require("path");
 const app = express();
 const gps = require("./config/routes");
 const gpsModel = require("./models/syrusTracking");
-let d;
+let d, data;
 
 server.on("error", err => {
 	console.log(`server error:\n${err.stack}`);
@@ -16,7 +16,7 @@ server.on("message", (msg, rinfo) => {
 	console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
 	d = msg.toString("utf8");
 	if (d != null) {
-		let nWeeks, day, time, lon, lat, newMsg, data;
+		let nWeeks, day, time, lon, lat, newMsg;
 		// >REV002041663724+1099304-0748281400000032;ID=AVENGERS<
 		let newData = d;
 		newMsg = newData.split("");
@@ -64,7 +64,7 @@ app.get("/map", function(req, res) {
 });
 
 app.get("/hist", (req, res) => {
-	let data = {
+	let dataN = {
 		fDate: req.fDate,
 		lDate: req.lDate,
 		fHour: req.fHour,
