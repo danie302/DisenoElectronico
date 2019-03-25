@@ -43,7 +43,7 @@ server.on("message", (msg, rinfo) => {
 		let dateConvert = gpsConv.wnTowToUtcTimestamp(nWeeks, time);
 		let newDate = `${dateConvert.getUTCDate()}-${dateConvert.getUTCMonth() +
 			1}-${dateConvert.getUTCFullYear()} `;
-		let newTime = `${date.getUTCHours()}:${date.getMinutes()}`;
+		let newTime = `${dateConvert.getUTCHours()}:${dateConvert.getMinutes()}`;
 		data = {
 			id: null,
 			date: newDate,
