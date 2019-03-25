@@ -40,10 +40,15 @@ server.on("message", (msg, rinfo) => {
 			newMsg[49]
 		}${newMsg[50]}${newMsg[51]}${newMsg[52]}`;
 		//
-		let dateConvert = gpsConv.wnTowToUtcTimestamp(nWeeks, time);
+		let dateConvert = gpsConv.wnTowToUtcTimestamp(
+			parseInt(nWeeks, 10),
+			parseInt(time, 10)
+		);
 		let newDate = `${dateConvert.getUTCDate()}-${dateConvert.getUTCMonth() +
 			1}-${dateConvert.getUTCFullYear()} `;
 		let newTime = `${dateConvert.getUTCHours()}:${dateConvert.getMinutes()}`;
+		console.log(dateConvert);
+
 		data = {
 			id: null,
 			date: newDate,
