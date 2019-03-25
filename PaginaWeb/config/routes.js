@@ -35,25 +35,6 @@ router.get("/raster/:id", function(req, res) {
 	}
 });
 
-//insertar un usuario por su id
-router.post("/newRaster", function(req, res) {
-	//creamos un objeto con los datos a insertar del usuario
-	// INSERT INTO `gps`.`GPS-Tracking` (`id`, `Syrus ID`, `GPS-Trama`) VALUES ('1', 'Avengers', '>REV002041663724+1099304-0748281400000032;ID=AVENGERS<');
-	let userData = {
-		id: null,
-		syrusID: req.body.syrusID,
-		gpsTrama: req.body.gpsTrama
-	};
-	gpsModel.insertRaster(userData, function(error, data) {
-		//si el usuario se ha insertado correctamente mostramos su info
-		if (data && data.insertId) {
-			res.redirect("/users/" + data.insertId);
-		} else {
-			res.json(500, { msg: "Error" });
-		}
-	});
-});
-
 router.post("/hist", (req, res) => {
 	let range = {
 		firstDate: req.body.fDate,
