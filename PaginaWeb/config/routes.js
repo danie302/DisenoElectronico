@@ -54,4 +54,23 @@ router.post("/newRaster", function(req, res) {
 	});
 });
 
+router.post("/hist", (req, res) => {
+	let range = {
+		firstDate: req.body.fDate,
+		lastDate: req.body.lDate,
+		firstTime: req.body.fTime,
+		lastTime: req.body.lTime
+	};
+
+	let rangeDates;
+	gpsModel.getRange(range, (err, data) => {
+		if (err) {
+			throw err;
+		} else {
+			rangeDates = data;
+			res.status(200).json(rangeDates);
+		}
+	});
+});
+
 module.exports = router;

@@ -43,7 +43,7 @@ gpsModel.getRaster = function(id, callback) {
 };
 
 //añadir un nuevo usuario
-gpsModel.insertRaster = function(gpsData, callback) {
+gpsModel.insertRaster = (gpsData, callback) => {
 	if (connection) {
 		// INSERT INTO `gps`.`GPS-Tracking` (`id`, `Syrus ID`, `GPS-Trama`) VALUES ('1', 'Avengers', '>REV002041663724+1099304-0748281400000032;ID=AVENGERS<');
 		connection.query("INSERT INTO `GPS-tracking` SET ?", gpsData, function(
@@ -57,6 +57,22 @@ gpsModel.insertRaster = function(gpsData, callback) {
 				callback(null, { insertId: result.insertId });
 			}
 		});
+	}
+};
+gpsModel.getRange = (range, callback) => {
+	let { firstDate, lastDate, firstTime, lastTime } = range;
+	if (connection) {
+		connection.query(
+			"SELECT * FROM `GPS-tracking` WHERE date BETWEEN ? and ? and time BETWEEN ? and ?",
+			[firstDate, lastDate, firstTime, lastTime],
+			(error, rows) => {
+				if (error) {
+					throw error;
+				} else {
+					callback(null, rows);
+				}
+			}
+		);
 	}
 };
 

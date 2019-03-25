@@ -2,6 +2,7 @@ const dgram = require("dgram");
 const server = dgram.createSocket("udp4");
 const express = require("express");
 const path = require("path");
+const bodyParser = require("body-parser");
 const app = express();
 const gps = require("./config/routes");
 const gpsModel = require("./models/syrusTracking");
@@ -56,23 +57,15 @@ server.on("listening", () => {
 	console.log(`server listening ${address.address}:${address.port}`);
 });
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 app.use("/gps", gps);
 
 app.use(express.static(path.join(__dirname, "public/build")));
 
 app.get("/map", function(req, res) {
 	res.sendFile(path.join(__dirname + "/public/map.html"));
-});
-
-app.get("/hist", (req, res) => {
-	let dataN = {
-		fDate: req.fDate,
-		lDate: req.lDate,
-		fHour: req.fHour,
-		lHour: req.lHour
-	};
-	let bounds;
-	res.json(bounds);
 });
 
 app.get("/coord", (req, res) => {
