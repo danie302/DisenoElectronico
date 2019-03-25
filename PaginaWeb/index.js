@@ -4,7 +4,7 @@ const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const gps = require("gpstime");
+const gpsConv = require("gpstime");
 const app = express();
 const gps = require("./config/routes");
 const gpsModel = require("./models/syrusTracking");
@@ -40,7 +40,7 @@ server.on("message", (msg, rinfo) => {
 			newMsg[49]
 		}${newMsg[50]}${newMsg[51]}${newMsg[52]}`;
 		//
-		let dateConvert = gps.wnTowToUtcTimestamp(nWeeks, time);
+		let dateConvert = gpsConv.wnTowToUtcTimestamp(nWeeks, time);
 		let newDate = `${dateConvert.getUTCDate()}-${dateConvert.getUTCMonth() +
 			1}-${dateConvert.getUTCFullYear()} `;
 		let newTime = `${date.getUTCHours()}:${date.getMinutes()}`;
