@@ -3,10 +3,16 @@ const server = dgram.createSocket("udp4");
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const app = express();
 const gps = require("./config/routes");
 const gpsModel = require("./models/syrusTracking");
 let d, data;
+
+// Middlewares
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(cors());
 
 server.on("error", err => {
 	console.log(`server error:\n${err.stack}`);
@@ -56,9 +62,6 @@ server.on("listening", () => {
 	const address = server.address();
 	console.log(`server listening ${address.address}:${address.port}`);
 });
-
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 
 app.use("/gps", gps);
 
