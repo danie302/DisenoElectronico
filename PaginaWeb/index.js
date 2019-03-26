@@ -27,6 +27,7 @@ server.on("message", (msg, rinfo) => {
 		let nWeeks, syrusID, time, lon, lat, newMsg;
 		// >REV002041663724+1099304-0748281400000032;ID=AVENGERS<
 		let newData = d;
+		console.log(newData);
 		newMsg = newData.split("");
 		nWeeks = `${newMsg[6]}${newMsg[7]}${newMsg[8]}${newMsg[9]}`; // Number of weeks since 00:00 AM January 6, 1980
 		time = `${newMsg[11]}${newMsg[12]}${newMsg[13]}${newMsg[14]}${newMsg[15]}`; // Time of the generated report. Seconds since 00:00 of the current date.
@@ -47,7 +48,6 @@ server.on("message", (msg, rinfo) => {
 		let newDate = `${dateConvert.getUTCDate()}-${dateConvert.getUTCMonth() +
 			1}-${dateConvert.getUTCFullYear()} `;
 		let newTime = `${dateConvert.getUTCHours()}:${dateConvert.getMinutes()}`;
-		console.log(dateConvert);
 
 		data = {
 			id: null,
@@ -57,7 +57,7 @@ server.on("message", (msg, rinfo) => {
 			lat: lat,
 			syrusID: syrusID
 		};
-		gpsModel.insertRaster(data, function(error, data) {});
+		gpsModel.insertRaster(data, (error, data) => {});
 		data = JSON.stringify(data);
 	}
 });
@@ -73,6 +73,10 @@ app.use(express.static(path.join(__dirname, "public/build")));
 
 app.get("/map", function(req, res) {
 	res.sendFile(path.join(__dirname + "/public/map.html"));
+});
+
+app.get("/hmap", function(req, res) {
+	res.sendFile(path.join(__dirname + "/public/hmap.html"));
 });
 
 app.get("/coord", (req, res) => {

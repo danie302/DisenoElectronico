@@ -6,19 +6,19 @@ var gpsModel = require("../models/syrusTracking");
 //creamos el ruteo de la aplicación
 
 //mostramos todos los usuarios
-router.get("/rasters", function(req, res) {
-	gpsModel.getRasters(function(error, data) {
+router.get("/rasters", (req, res) => {
+	gpsModel.getRasters((error, data) => {
 		res.json(200, data);
 	});
 });
 
 //obtiene un usuario por su id
-router.get("/raster/:id", function(req, res) {
+router.get("/raster/:id", (req, res) => {
 	//id del usuario
 	let id = req.params.id;
 	//solo actualizamos si la id es un número
 	if (!isNaN(id)) {
-		gpsModel.getRaster(id, function(error, data) {
+		gpsModel.getRaster(id, (error, data) => {
 			//si el usuario existe lo mostramos en formato json
 			if (typeof data !== "undefined" && data.length > 0) {
 				res.json(200, data);
@@ -62,7 +62,7 @@ router.post("/place", (req, res) => {
 	};
 
 	let times;
-	gpsModel.getTimes(range, (err, data) => {
+	gpsModel.getTimes(place, (err, data) => {
 		if (err) {
 			throw err;
 		} else {
