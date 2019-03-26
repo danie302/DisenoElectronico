@@ -54,4 +54,22 @@ router.post("/hist", (req, res) => {
 	});
 });
 
+router.post("/place", (req, res) => {
+	let place = {
+		date: req.body.date,
+		lat: req.body.lat,
+		lon: req.body.lon
+	};
+
+	let times;
+	gpsModel.getTimes(range, (err, data) => {
+		if (err) {
+			throw err;
+		} else {
+			times = data;
+			res.status(200).json(times);
+		}
+	});
+});
+
 module.exports = router;

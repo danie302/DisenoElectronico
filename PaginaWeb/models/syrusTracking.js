@@ -59,12 +59,32 @@ gpsModel.insertRaster = (gpsData, callback) => {
 		});
 	}
 };
+
+// Buscamos un rango de fechas
 gpsModel.getRange = (range, callback) => {
 	let { firstDate, lastDate, firstTime, lastTime } = range;
 	if (connection) {
 		connection.query(
 			"SELECT * FROM `GPS-tracking` WHERE date BETWEEN ? and ? and time BETWEEN ? and ?",
 			[firstDate, lastDate, firstTime, lastTime],
+			(error, rows) => {
+				if (error) {
+					throw error;
+				} else {
+					callback(null, rows);
+				}
+			}
+		);
+	}
+};
+
+// Buscamos la hora en un punto especifico
+gpsModel.getTimes = (point, callback) => {
+	let { date, lat, lon } = point;
+	if (connection) {
+		connection.query(
+			"SELECT time FROM `GPS-tracking` WHERE date = ? and FORMAT(lat, 3) = FORMAT(?, 3) and FORMAT(lon, 3) = FORMAT(?, 3)",
+			[date, lat, lon],
 			(error, rows) => {
 				if (error) {
 					throw error;
