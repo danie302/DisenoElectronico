@@ -49,7 +49,6 @@ router.post("/hist", (req, res) => {
 			throw err;
 		} else {
 			rangeDates = data;
-			console.log(rangeDates);
 			res.status(200).json(rangeDates);
 		}
 	});

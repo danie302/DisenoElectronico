@@ -74,6 +74,10 @@ app.get("/map", function(req, res) {
 	res.sendFile(path.join(__dirname + "/public/map.html"));
 });
 
+app.get("/hmap", function(req, res) {
+	res.sendFile(path.join(__dirname + "/public/hmap.html"));
+});
+
 app.get("/coord", (req, res) => {
 	console.log(data);
 	res.json(`${data}`);
