@@ -68,14 +68,37 @@
 </html>
 
 <script>
+  function formatdate(date, time) {
+    let fecha = `${date.getUTCDate()}-${date.getUTCMonth() +
+      1}-${date.getUTCFullYear()} `;
+    return fecha;
+  }
+  function formattime(date) {
+    let hora = `${date.getUTCHours() - 5}:${date.getMinutes()}`;
+    return hora;
+  }
   function daterange() {
     var clientid = document.getElementById("clientid").value;
-    var idate = document.getElementById("idate").value;
-    var fdate = document.getElementById("fdate").value;
+    var iidate = document.getElementById("idate").value;
+    let ffdate = document.getElementById("fdate").value;
+    let idate = new Date(iidate);
+    let fdate = new Date(ffdate);
+    let fDate = formatdate(idate);
+    let lDate = formatdate(fdate);
+    let fTime = formattime(idate);
+    let lTime = formattime(fdate);
+    let range = {
+      fDate: fDate,
+      lDate: lDate,
+      fTime: fTime,
+      lTime: fTime
+    };
+    console.log(range);
+    fetchhist(range);
     document.getElementById(
       "demo"
     ).innerHTML = `Historical Range user ${clientid} :<br>\
-    from: ${idate} <br>\ to: ${fdate}  `;
+    from: ${fDate} @ ${fTime} <br>\ to: ${lDate} @ ${lTime} <br>\ ${range} `;
   }
 
   let longitude = document.getElementById("Long");
@@ -95,6 +118,7 @@
     date.innerText = `Date: ${dat}`;
     time.innerText = `Time: ${tim}`;
   }
+
   function fetchData() {
     fetch("/coord") // Fetching the data from the server
       .then(function(res) {
@@ -116,7 +140,21 @@
         );
       });
   }
-
+  let rangecoords;
+  function fetchhist(data) {
+    fetch("/gps/hist", {
+      method: "POST", // or 'PUT'
+      body: data, // data can be `string` or {object}!
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(res => res.json())
+      .catch(error => console.error("Error:", error))
+      .then(response => {
+        rangecoords = response;
+      });
+  }
   function initMap() {
     // Variables
     console.log(parseFloat(lat));
