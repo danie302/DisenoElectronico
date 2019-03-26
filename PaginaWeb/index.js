@@ -27,7 +27,8 @@ server.on("message", (msg, rinfo) => {
 		let nWeeks, syrusID, time, lon, lat, newMsg;
 		// >REV002041663724+1099304-0748281400000032;ID=AVENGERS<
 		let newData = d;
-		newMsg = newData.split("-");
+		console.log(newData);
+		newMsg = newData.split("");
 		nWeeks = `${newMsg[6]}${newMsg[7]}${newMsg[8]}${newMsg[9]}`; // Number of weeks since 00:00 AM January 6, 1980
 		time = `${newMsg[11]}${newMsg[12]}${newMsg[13]}${newMsg[14]}${newMsg[15]}`; // Time of the generated report. Seconds since 00:00 of the current date.
 		lat = `${newMsg[16]}${newMsg[17]}${newMsg[18]}.${newMsg[19]}${newMsg[20]}${
