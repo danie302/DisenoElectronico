@@ -12,7 +12,7 @@ var mysql = require("mysql"),
 let gpsModel = {};
 
 //obtenemos todos los usuarios
-gpsModel.getRasters = function(callback) {
+gpsModel.getRasters = callback => {
 	if (connection) {
 		connection.query("SELECT * FROM `GPS-tracking` ORDER BY id", function(
 			error,
@@ -28,7 +28,7 @@ gpsModel.getRasters = function(callback) {
 };
 
 //obtenemos un usuario por su id
-gpsModel.getRaster = function(id, callback) {
+gpsModel.getRaster = (id, callback) => {
 	if (connection) {
 		var sql =
 			"SELECT * FROM `GPS-tracking` WHERE id = " + connection.escape(id);
