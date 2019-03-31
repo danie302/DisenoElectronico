@@ -4,6 +4,7 @@ const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const livereload = require("livereload");
 const gpsConv = require("gpstime");
 const app = express();
 const gps = require("./config/routes");
@@ -21,13 +22,12 @@ server.on("error", err => {
 });
 
 server.on("message", (msg, rinfo) => {
-	console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
+	// console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
 	d = msg.toString("utf8");
 	if (d != null) {
 		let nWeeks, syrusID, time, lon, lat, newMsg;
 		// >REV002041663724+1099304-0748281400000032;ID=AVENGERS<
 		let newData = d;
-		console.log(newData);
 		newMsg = newData.split("");
 		nWeeks = `${newMsg[6]}${newMsg[7]}${newMsg[8]}${newMsg[9]}`; // Number of weeks since 00:00 AM January 6, 1980
 		time = `${newMsg[11]}${newMsg[12]}${newMsg[13]}${newMsg[14]}${newMsg[15]}`; // Time of the generated report. Seconds since 00:00 of the current date.
@@ -64,12 +64,16 @@ server.on("message", (msg, rinfo) => {
 
 server.on("listening", () => {
 	const address = server.address();
-	console.log(`server listening ${address.address}:${address.port}`);
+	// console.log(`server listening ${address.address}:${address.port}`);
 });
 
 app.use("/gps", gps);
 
-app.use(express.static(path.join(__dirname, "public/build")));
+app.use(express.static(path.join(__dirname, "public/")));
+
+app.get("/track", (req, res) => {
+	res.sendFile(path.join(__dirname + "/public/track/track.html"));
+});
 
 app.get("/map", function(req, res) {
 	res.sendFile(path.join(__dirname + "/public/map.html"));
@@ -80,7 +84,6 @@ app.get("/hmap", function(req, res) {
 });
 
 app.get("/coord", (req, res) => {
-	console.log(data);
 	res.json(`${data}`);
 });
 
@@ -89,3 +92,8 @@ app.listen(4000, () => {
 });
 
 server.bind(4001);
+
+const reload = livereload.createServer({
+	exts: ["js", "css", "html"]
+});
+reload.watch(path.join(__dirname, "public/track"));
