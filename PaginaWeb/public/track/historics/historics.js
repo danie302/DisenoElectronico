@@ -56,12 +56,12 @@ function initMap() {
 			flightPlanCoordinates2.forEach((routePoint, index) => {
 				let dist = google.maps.geometry.spherical.computeDistanceBetween(
 					latlng,
-					routePoint.latLng
+					routePoint.latlng
 				);
 				if (dist < needle.minDistance) {
 					needle.minDistance = dist;
 					needle.index = index;
-					needle.latlng = routePoint.latLng;
+					needle.latlng = routePoint.latlng;
 				}
 			});
 			// The closest point in the polyline
