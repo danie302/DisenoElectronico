@@ -58,6 +58,8 @@ function initMap() {
 			fTime: dateObj.formTime,
 			lTime: dateObj2.formTime
 		};
+		flightPath.setMap(null);
+
 		axios
 			.post("/gps/hist", data)
 			.then(response => {
