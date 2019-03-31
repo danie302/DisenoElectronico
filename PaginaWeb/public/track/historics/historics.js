@@ -57,7 +57,6 @@ function initMap() {
 						lng: path.lon
 					};
 				});
-				console.log(flightPlanCoordinates);
 			})
 			.then(() => {
 				drawRoad();
