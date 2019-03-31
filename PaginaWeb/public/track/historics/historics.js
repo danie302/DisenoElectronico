@@ -82,7 +82,7 @@ function initMap() {
 						strokeWeight: 2
 					});
 					console.log(flightPlanCoordinates);
-					flightPath.setMap(null);
+					flightPath.setMap(map);
 				} else {
 					response.data.map((path, index) => {
 						flightPlanCoordinates[index] = {
