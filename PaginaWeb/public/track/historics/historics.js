@@ -47,7 +47,7 @@ function initMap() {
 		map.setCenter(marker.getPosition());
 		marker.setMap(null);
 		google.maps.event.addListener(flightPath, "click", point => {
-			let latlng = point.latLng;
+			let latlng = point.latlng;
 			let needle = {
 				minDistance: 9999999999, //silly high
 				index: -1,
