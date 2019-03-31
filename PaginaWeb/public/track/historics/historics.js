@@ -72,8 +72,10 @@ function initMap() {
 		axios
 			.post("/gps/hist", data)
 			.then(response => {
+				console.log(response.data);
 				if (response.data == null) {
 					flightPlanCoordinates = [{ lat: 0, lng: 0 }];
+					console.log(flightPlanCoordinates);
 				} else {
 					response.data.map((path, index) => {
 						flightPlanCoordinates[index] = {
