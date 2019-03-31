@@ -36,7 +36,17 @@ function initMap() {
 			strokeWeight: 2
 		});
 		flightPath.setMap(map);
+		let marker = new google.maps.Marker({
+			position: {
+				lat: flightPlanCoordinates[0].lat,
+				lng: flightPlanCoordinates[0].lng
+			},
+			map
+		});
+		map.setCenter(marker.getPosition());
+		marker.setMap(null);
 	}
+
 	dBtn.addEventListener("click", () => {
 		let nFdate = new Date(fDate.value);
 		let nLdate = new Date(lDate.value);
