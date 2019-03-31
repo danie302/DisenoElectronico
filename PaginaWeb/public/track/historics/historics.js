@@ -73,7 +73,7 @@ function initMap() {
 			.post("/gps/hist", data)
 			.then(response => {
 				console.log(response.data);
-				if (response.data == null) {
+				if ((response.data.lenght = 0)) {
 					flightPlanCoordinates = [{ lat: 0, lng: 0 }];
 					console.log(flightPlanCoordinates);
 				} else {
