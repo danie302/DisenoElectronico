@@ -52,8 +52,8 @@ function initMap() {
 				index: -1,
 				latlng: null
 			};
-			routePath.getPath().forEach((routePoint, index) => {
-				var dist = google.maps.geometry.spherical.computeDistanceBetween(
+			flightPath.getPath().forEach((routePoint, index) => {
+				let dist = google.maps.geometry.spherical.computeDistanceBetween(
 					latlng,
 					routePoint
 				);
