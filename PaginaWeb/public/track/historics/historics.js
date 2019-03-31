@@ -33,7 +33,7 @@ function initMap() {
 			geodisc: true,
 			strokeColor: "#FF0000",
 			strokeOpacity: 1,
-			strokeWeight: 2
+			strokeWeight: 4
 		});
 		flightPath.setMap(map);
 		let marker = new google.maps.Marker({
@@ -45,9 +45,29 @@ function initMap() {
 		});
 		map.setCenter(marker.getPosition());
 		marker.setMap(null);
-		google.maps.event.addListener(flightPath, "click", function() {
-			alert(flightPath);
-			// TODO: display which section of the polyline has been clicked?
+		google.maps.event.addListener(flightPath, "click", point => {
+			let latlng = point.latLng;
+			let needle = {
+				minDistance: 9999999999, //silly high
+				index: -1,
+				latlng: null
+			};
+			routePath.getPath().forEach((routePoint, index) => {
+				var dist = google.maps.geometry.spherical.computeDistanceBetween(
+					latlng,
+					routePoint
+				);
+				if (dist < needle.minDistance) {
+					needle.minDistance = dist;
+					needle.index = index;
+					needle.latlng = routePoint;
+				}
+			});
+			// The closest point in the polyline
+			alert("Closest index: " + needle.index);
+
+			// The clicked point on the polyline
+			alert(latlng);
 		});
 	}
 
