@@ -45,6 +45,10 @@ function initMap() {
 		});
 		map.setCenter(marker.getPosition());
 		marker.setMap(null);
+		google.maps.event.addListener(flightPath, "click", function() {
+			alert(flightPath);
+			// TODO: display which section of the polyline has been clicked?
+		});
 	}
 
 	dBtn.addEventListener("click", () => {
