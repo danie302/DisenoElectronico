@@ -74,6 +74,13 @@ function initMap() {
 			.then(response => {
 				if (response.data.length == 0) {
 					flightPlanCoordinates = [{ lat: 0, lng: 0 }];
+					flightPath = new google.maps.Polyline({
+						path: flightPlanCoordinates,
+						geodisc: true,
+						strokeColor: "#FF0000",
+						strokeOpacity: 1,
+						strokeWeight: 2
+					});
 					console.log(flightPlanCoordinates);
 					flightPath.setMap(null);
 				} else {
