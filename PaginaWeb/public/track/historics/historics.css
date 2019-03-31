@@ -1,0 +1,25 @@
+#map {
+	height: 300px;
+	width: 100%;
+}
+
+.GPS-Box {
+	margin: 2%;
+	border-style: solid;
+	border-color: black;
+	border-width: 5px;
+	border-radius: 10px;
+	width: 25%;
+}
+
+.dispBtn {
+	cursor: pointer;
+	margin: 2%;
+	width: 28%;
+	border-style: solid;
+	border-color: black;
+	border-width: 2px;
+	border-radius: 10px;
+	text-align: center;
+	font-size: 80%;
+}
