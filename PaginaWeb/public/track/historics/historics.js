@@ -7,7 +7,6 @@ const dBtn = document.getElementById("dispBtn");
 let lat = 10.99304;
 let lon = -74.8281;
 let flightPlanCoordinates = [];
-let flightPath;
 
 function formatdate(date, time) {
 	let formDate = `${date.getUTCDate()}-${date.getUTCMonth() +
@@ -29,7 +28,7 @@ function initMap() {
 	map = new google.maps.Map(document.getElementById("map"), opt);
 
 	function drawRoad() {
-		flightPath = new google.maps.Polyline({
+		let flightPath = new google.maps.Polyline({
 			path: flightPlanCoordinates,
 			geodisc: true,
 			strokeColor: "#FF0000",
@@ -59,39 +58,18 @@ function initMap() {
 			fTime: dateObj.formTime,
 			lTime: dateObj2.formTime
 		};
-		flightPlanCoordinates = [];
-		flightPath = new google.maps.Polyline({
-			path: flightPlanCoordinates,
-			geodisc: true,
-			strokeColor: "#FF0000",
-			strokeOpacity: 1,
-			strokeWeight: 2
-		});
-		flightPath.setMap(null);
-
 		axios
 			.post("/gps/hist", data)
 			.then(response => {
-				if (response.data.length == 0) {
-					flightPlanCoordinates = [{ lat: 0, lng: 0 }];
-					flightPath = new google.maps.Polyline({
-						path: flightPlanCoordinates,
-						geodisc: true,
-						strokeColor: "#FF0000",
-						strokeOpacity: 1,
-						strokeWeight: 2
-					});
-					console.log(flightPlanCoordinates);
-					flightPath.setMap(map);
-				} else {
-					response.data.map((path, index) => {
-						flightPlanCoordinates[index] = {
-							lat: path.lat,
-							lng: path.lon
-						};
-					});
-					drawRoad();
-				}
+				response.data.map((path, index) => {
+					flightPlanCoordinates[index] = {
+						lat: path.lat,
+						lng: path.lon
+					};
+				});
+			})
+			.then(() => {
+				drawRoad();
 			})
 			.catch(function(error) {
 				console.log(error);
