@@ -7,6 +7,7 @@ const dBtn = document.getElementById("dispBtn");
 let lat = 10.99304;
 let lon = -74.8281;
 let flightPlanCoordinates = [];
+let flightPlanCoordinates2 = [];
 
 function formatdate(date, time) {
 	let formDate = `${date.getUTCDate()}-${date.getUTCMonth() +
@@ -52,15 +53,15 @@ function initMap() {
 				index: -1,
 				latlng: null
 			};
-			flightPath.getPath().forEach((routePoint, index) => {
+			flightPlanCoordinates2.forEach((routePoint, index) => {
 				let dist = google.maps.geometry.spherical.computeDistanceBetween(
 					latlng,
-					routePoint
+					routePoint.latLng
 				);
 				if (dist < needle.minDistance) {
 					needle.minDistance = dist;
 					needle.index = index;
-					needle.latlng = routePoint;
+					needle.latlng = routePoint.latLng;
 				}
 			});
 			// The closest point in the polyline
@@ -89,6 +90,13 @@ function initMap() {
 					flightPlanCoordinates[index] = {
 						lat: path.lat,
 						lng: path.lon
+					};
+					flightPlanCoordinates2[index] = {
+						latlng: {
+							lat: path.lat,
+							lng: path.lon
+						},
+						time: path.time
 					};
 				});
 			})
