@@ -72,12 +72,16 @@ function initMap() {
 		axios
 			.post("/gps/hist", data)
 			.then(response => {
-				response.data.map((path, index) => {
-					flightPlanCoordinates[index] = {
-						lat: path.lat,
-						lng: path.lon
-					};
-				});
+				if (response.data == null) {
+					flightPlanCoordinates = [{ lat: 0, lng: 0 }];
+				} else {
+					response.data.map((path, index) => {
+						flightPlanCoordinates[index] = {
+							lat: path.lat,
+							lng: path.lon
+						};
+					});
+				}
 			})
 			.then(() => {
 				drawRoad();
