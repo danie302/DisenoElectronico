@@ -75,6 +75,7 @@ function initMap() {
 				if (response.data.length == 0) {
 					flightPlanCoordinates = [{ lat: 0, lng: 0 }];
 					console.log(flightPlanCoordinates);
+					flightPath.setMap(null);
 				} else {
 					response.data.map((path, index) => {
 						flightPlanCoordinates[index] = {
@@ -82,10 +83,8 @@ function initMap() {
 							lng: path.lon
 						};
 					});
+					drawRoad();
 				}
-			})
-			.then(() => {
-				drawRoad();
 			})
 			.catch(function(error) {
 				console.log(error);
