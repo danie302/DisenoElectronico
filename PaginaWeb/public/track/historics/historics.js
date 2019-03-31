@@ -47,28 +47,40 @@ function initMap() {
 		map.setCenter(marker.getPosition());
 		marker.setMap(null);
 		google.maps.event.addListener(flightPath, "click", point => {
-			let latlng = point.latlng;
+			let latlng = point.latLng;
 			let needle = {
 				minDistance: 9999999999, //silly high
 				index: -1,
-				latlng: null
+				latlng: null,
+				time: null
 			};
-			flightPlanCoordinates2.forEach((routePoint, index) => {
+			flightPath.getPath().forEach((routePoint, index) => {
 				let dist = google.maps.geometry.spherical.computeDistanceBetween(
 					latlng,
-					routePoint.latlng
+					routePoint
 				);
 				if (dist < needle.minDistance) {
 					needle.minDistance = dist;
 					needle.index = index;
-					needle.latlng = routePoint.latlng;
+					needle.latlng = routePoint;
+					needle.time = flightPlanCoordinates2[index].time;
 				}
 			});
-			// The closest point in the polyline
-			alert("Closest index: " + needle.index);
-
-			// The clicked point on the polyline
-			alert(latlng);
+			let geocoder = new google.maps.Geocoder();
+			geocoder.geocode({ location: latlng }, (result, status) => {
+				if (status === "OK") {
+					if (result[0]) {
+						alert(
+							"The truck was at: " +
+								result[0].formatted_address +
+								" at: " +
+								needle.time
+						);
+					}
+				} else {
+					console.log(result);
+				}
+			});
 		});
 	}
 
@@ -92,10 +104,6 @@ function initMap() {
 						lng: path.lon
 					};
 					flightPlanCoordinates2[index] = {
-						latlng: {
-							lat: path.lat,
-							lng: path.lon
-						},
 						time: path.time
 					};
 				});
