@@ -81,6 +81,10 @@ html {
 	left: 30%;
 }
 
+.text {
+	text-align: justify;
+}
+
 .dispBtn {
 	cursor: pointer;
 	margin: 2%;
