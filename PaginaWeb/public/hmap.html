@@ -9,32 +9,43 @@
     <style>
       #map {
         position: absolute;
-        height: 500px;
-        width: 1000px;
-        left: 300px;
-        top: 70px;
+        height: 550px;
+        width: 1050px;
+        left: 250px;
+        top: 80px;
       }
     </style>
   </head>
   <body>
-    <h1>Truck Tracker</h1>
+    <h1 style="text-align: center">Truck Tracker</h1>
     <div>
       <form>
-        <label>Date: </label>
+        <label>Id number: </label><br />
+        <input type="text" id="clientid" /><br />
+      </form>
+    </div>
+    <div>
+      <form style="position:absolute;top:130px">
+        <label>Initial Date: </label><br />
         <input type="datetime-local" id="idate" /><br />
       </form>
     </div>
     <div>
-      <form>
-        <label>Date: </label>
+      <form style="position:absolute;top:190px">
+        <label>Final Date: </label><br />
         <input type="datetime-local" id="fdate" /><br />
       </form>
     </div>
-    <button onclick="daterange()">ok</button>
-    <p id="idemo"></p>
-    <p id="fdemo"></p>
+
+    <button style="position:absolute;top:240px" id="button">
+      Submit
+    </button>
+    <div style="position:absolute;top:260px">
+      <p id="demo"></p>
+    </div>
+
     <div id="map"></div>
-    <div class="GPS-Box">
+    <div class="GPS-Box" style="position:absolute;top:390px">
       <div id="Long" class="Coordinates">
         Longitude:
       </div>
@@ -53,13 +64,43 @@
       defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaUgFuVypDeWug-2htEXKEssI7TpifSg8&callback=initMap"
     ></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   </body>
 </html>
 
 <script>
+  document.getElementById("button").addEventListener("click", daterange);
+  function formatdate(date, time) {
+    let fecha = `${date.getUTCDate()}-${date.getUTCMonth() +
+      1}-${date.getUTCFullYear()} `;
+    return fecha;
+  }
+  function formattime(date) {
+    let hora = `${date.getUTCHours() - 5}:${date.getMinutes()}`;
+    return hora;
+  }
   function daterange() {
-    var x = document.getElementById("idate").value;
-    document.getElementById("idemo").innerHTML = x;
+    var clientid = document.getElementById("clientid").value;
+    var iidate = document.getElementById("idate").value;
+    let ffdate = document.getElementById("fdate").value;
+    let idate = new Date(iidate);
+    let fdate = new Date(ffdate);
+    let fDate = formatdate(idate);
+    let lDate = formatdate(fdate);
+    let fTime = formattime(idate);
+    let lTime = formattime(fdate);
+    let range = {
+      fDate: fDate,
+      lDate: lDate,
+      fTime: fTime,
+      lTime: lTime
+    };
+    //console.log(range);
+    fetchhist(range);
+    document.getElementById(
+      "demo"
+    ).innerHTML = `Historical Range user ${clientid} :<br>\
+    from: ${fDate} @ ${fTime} <br>\ to: ${lDate} @ ${lTime} <br>\ $ `;
   }
 
   let longitude = document.getElementById("Long");
@@ -79,15 +120,15 @@
     date.innerText = `Date: ${dat}`;
     time.innerText = `Time: ${tim}`;
   }
+
   function fetchData() {
     fetch("/coord") // Fetching the data from the server
-      .then(function(res) {
+      .then(res => {
         return res.json();
       })
       .then(data => {
         now = new Date(); // To get the internal date
         data = JSON.parse(data);
-        console.log(data);
         oldLat = lat;
         oldLon = lon;
         lat = data.lat;
@@ -100,11 +141,28 @@
         );
       });
   }
-
+  let rangecoords, hlat, hlong;
+  function fetchhist(data) {
+    console.log(data);
+    axios
+      .post("/gps/hist", data)
+      .then(function(response) {
+        //console.log(response);
+        rangecoords = response;
+        for (i = 0; i < rangecoords.length; i++) {
+          hlat[i] = {
+            lat: rangecoords[i].lat,
+            lng: rangecoords[i].lon
+          };
+        }
+        console.log(hlat);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  }
   function initMap() {
     // Variables
-    console.log(parseFloat(lat));
-    console.log(parseFloat(lon));
     // Map options
     let opt = {
       zoom: 18,
