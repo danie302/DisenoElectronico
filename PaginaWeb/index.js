@@ -57,6 +57,8 @@ server.on("message", (msg, rinfo) => {
 			lat: lat,
 			syrusID: syrusID
 		};
+		console.log(data.date);
+		
 		gpsModel.insertRaster(data, (error, data) => {});
 		data = JSON.stringify(data);
 	}
