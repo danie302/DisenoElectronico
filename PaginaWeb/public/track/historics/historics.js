@@ -28,13 +28,6 @@ function initMap() {
 	};
 	// Creating the map
 	map = new google.maps.Map(document.getElementById("map"), opt);
-	let flightPath = new google.maps.Polyline({
-		path: [{ lat: 0, lng: 0 }, { lat: 0, lng: 0 }],
-		geodisc: true,
-		strokeColor: "#FF0000",
-		strokeOpacity: 1,
-		strokeWeight: 4
-	});
 	function drawRoad() {
 		let flightPath = new google.maps.Polyline({
 			path: flightPlanCoordinates,
@@ -136,7 +129,6 @@ function initMap() {
 					if (safe == 0) {
 						drawRoad();
 					} else {
-						flightPlanCoordinates = [{ lat: 0, lng: 0 }];
 						alert("No data");
 					}
 				})
