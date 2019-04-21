@@ -55,6 +55,25 @@ module Api
                     render json: {status:"Error", error: "Unauthorized"}, status: :ok
                 end
             end
+            def getTrucks 
+                # Get the token
+                @token = request.headers[:Authorization]
+                if @token
+                    # Decode the token information
+                    @tokenDecode = JsonWebToken.decode(@token)
+                    # Find the user by its id
+                    @user = User.find_by_id(@tokenDecode[:id])
+                    # If the user exist
+                    if @user
+                        @trucks = Truck.where(user_id: @tokenDecode[:id])
+                        render json: {status: "Success", trucks: @trucks}, status: :ok
+                    else
+                        render json: {status: "Error", trucks: @trucks.errors}, status: :ok
+                    end
+                else
+                    render json: {status:"Error", error: "Unauthorized"}, status: :ok
+                end
+            end
             def addLocation
                 # Find the truck that is sending its info
                 @truck = Truck.find_by_truckname(params[:truckname])

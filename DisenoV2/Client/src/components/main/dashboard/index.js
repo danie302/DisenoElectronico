@@ -6,95 +6,83 @@ import { Link } from "react-router-dom";
 
 // Components
 import Spinner from "../common/spinner";
-import ProfileActions from "./profileActions";
-import Experience from "./experience";
-import Education from "./education";
+
+// Assets
+import "./dashboard.css";
 
 // Import actions
-import {
-  getCurrentProfile,
-  deleteAccount
-} from "../../../actions/profileActions";
+import { getUserTrucks } from "../../../actions/profileActions";
 
 class Dashboard extends Component {
-  componentDidMount() {
-    this.props.getCurrentProfile();
-  }
+	componentDidMount() {
+		this.props.getUserTrucks();
+	}
 
-  onDeleteClick(e) {
-    this.props.deleteAccount();
-  }
+	render() {
+		const { user } = this.props.auth;
+		const { loading } = this.props.profile;
 
-  render() {
-    const { user } = this.props.auth;
-    const { profile, loading } = this.props.profile;
+		let dashboardContent;
 
-    let dashboardContent;
+		if (loading) {
+			dashboardContent = <Spinner />;
+		} else {
+			// User is logged in but has no profile
+			dashboardContent = (
+				<div>
+					<p className=' lead text-muted'>Welcome {user.user}</p>
+					<p>{user.user} please use our services respectfull</p>
+					<div className='dashboard-links'>
+						<Link
+							to='/add-truck'
+							className='btn btn-lg btn-info dashboard-link'
+						>
+							Add Trucks
+						</Link>
+						<Link
+							to='/real-time'
+							className='btn btn-lg btn-info dashboard-link'
+						>
+							Real Time
+						</Link>
+						<Link
+							to='/historics'
+							className='btn btn-lg btn-info dashboard-link'
+						>
+							Historics
+						</Link>
+					</div>
+				</div>
+			);
+		}
 
-    if (profile === null || loading) {
-      dashboardContent = <Spinner />;
-    } else {
-      if (Object.keys(profile).length > 0) {
-        dashboardContent = (
-          <div>
-            <p className="lead text-muted">
-              Welcome{" "}
-              <Link to={`/profile/handle/${profile.handle}`}>{user.name}</Link>
-            </p>
-            <ProfileActions />
-            <Experience experience={profile.experience} />
-            <Education education={profile.education} />
-            <div style={{ marginBottom: "60px" }} />
-            <button
-              onClick={this.onDeleteClick.bind(this)}
-              className="btn btn-danger"
-            >
-              Delete My Account
-            </button>
-          </div>
-        );
-      } else {
-        // User is logged in but has no profile
-        dashboardContent = (
-          <div>
-            <p className=" lead text-muted">Welcome {user.name}</p>
-            <p>You have not yet setup a profile, please add some info</p>
-            <Link to="/create-profile" className="btn btn-lg btn-info">
-              Create profile
-            </Link>
-          </div>
-        );
-      }
-    }
-
-    return (
-      <div className="dashboard">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12">
-              <h1 className="display-4">Dashboard</h1>
-              {dashboardContent}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+		return (
+			<div className='dashboard'>
+				<div className='container'>
+					<div className='row'>
+						<div className='col-md-12'>
+							<h1 className='display-4'>Dashboard</h1>
+							{dashboardContent}
+						</div>
+					</div>
+				</div>
+			</div>
+		);
+	}
 }
 
 Dashboard.propTypes = {
-  getCurrentProfile: PropTypes.func.isRequired,
-  deleteAccount: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
-  profile: PropTypes.object.isRequired
+	getUserTrucks: PropTypes.func.isRequired,
+	auth: PropTypes.object.isRequired,
+	profile: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  profile: state.profile,
-  auth: state.auth
+	profile: state.profile,
+	auth: state.auth
 });
 
 export default connect(
-  mapStateToProps,
-  { getCurrentProfile, deleteAccount }
+	mapStateToProps,
+	{ getUserTrucks }
 )(Dashboard);

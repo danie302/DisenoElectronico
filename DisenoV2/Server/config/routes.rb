@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       post '/user/login', to: 'users#login'
       post '/user/addTruck', to: 'users#addTruck'
       post '/user/addLocation', to: 'users#addLocation'
+      get '/user/getTrucks', to: 'users#getTrucks'
     end
   end
 end
