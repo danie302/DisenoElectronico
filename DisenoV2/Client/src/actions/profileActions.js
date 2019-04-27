@@ -10,7 +10,15 @@ import {
 	CLEAR_ERRORS
 } from "./types";
 
-// Get current profile
+// Add new truck
+export const addTrucks = (truckData, history) => dispatch => {
+	console.log(truckData);
+	axios
+		.post("/api/v1/user/addTruck", truckData)
+		.then(res => history.push("/dashboard"));
+};
+
+// Get user trucks list
 export const getUserTrucks = () => dispatch => {
 	dispatch(setProfileLoading());
 	axios

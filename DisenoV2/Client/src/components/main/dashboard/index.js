@@ -11,12 +11,9 @@ import Spinner from "../common/spinner";
 import "./dashboard.css";
 
 // Import actions
-import { getUserTrucks } from "../../../actions/profileActions";
 
 class Dashboard extends Component {
-	componentDidMount() {
-		this.props.getUserTrucks();
-	}
+	componentDidMount() {}
 
 	render() {
 		const { user } = this.props.auth;
@@ -72,7 +69,6 @@ class Dashboard extends Component {
 }
 
 Dashboard.propTypes = {
-	getUserTrucks: PropTypes.func.isRequired,
 	auth: PropTypes.object.isRequired,
 	profile: PropTypes.object.isRequired
 };
@@ -84,5 +80,5 @@ const mapStateToProps = state => ({
 
 export default connect(
 	mapStateToProps,
-	{ getUserTrucks }
+	{}
 )(Dashboard);

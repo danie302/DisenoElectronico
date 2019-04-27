@@ -12,6 +12,7 @@ import axios from "axios";
 import "react-datepicker/dist/react-datepicker.css";
 
 // Import actions
+import { getUserTrucks } from "../../actions/profileActions";
 
 class Historics extends Component {
 	constructor(props) {
@@ -32,7 +33,9 @@ class Historics extends Component {
 		this.handleChangeEnd = this.handleChangeEnd.bind(this);
 		this.fetchHistorics = this.fetchHistorics.bind(this);
 	}
-	componentDidMount() {}
+	componentDidMount() {
+		this.props.getUserTrucks();
+	}
 	onClick(truckname) {
 		this.setState({
 			selectedTruck: truckname
@@ -213,7 +216,8 @@ class Historics extends Component {
 
 Historics.propTypes = {
 	auth: PropTypes.object.isRequired,
-	profile: PropTypes.object.isRequired
+	profile: PropTypes.object.isRequired,
+	getUserTrucks: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -223,5 +227,5 @@ const mapStateToProps = state => ({
 
 export default connect(
 	mapStateToProps,
-	{}
+	{ getUserTrucks }
 )(Historics);
