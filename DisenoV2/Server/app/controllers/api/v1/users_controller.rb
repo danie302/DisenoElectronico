@@ -105,6 +105,24 @@ module Api
                     render json: {status:"Error", error: "Unauthorized"}, status: :ok
                 end
             end
+            def liveLocation
+                # Get the token
+                @token = request.headers[:Authorization]
+                if @token
+                    # Find the user by its id
+                    @truck = Truck.find_by_truckname(params[:truckname])
+                    # If the truck exist
+                    if @truck
+                        @locations = Location.where(truck_id: @truck.id)
+                        @location = @locations.last
+                        render json: {status: "Success", location: @location}, status: :ok
+                    else
+                        render json: {status: "Error", errors: @locations.errors}, status: :ok
+                    end
+                else
+                    render json: {status:"Error", error: "Unauthorized"}, status: :ok
+                end
+            end
             private
             def user_params
                 params.require(:user).permit(:name, :email)

@@ -87,7 +87,7 @@ function initMap() {
 			drawRoad(lat, lon);
 			addMarker(lat, lon);
 		}
-		setTimeout(actMap, 100);
+		setTimeout(actMap, 1000);
 	}
 	actMap();
 }

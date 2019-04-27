@@ -2,36 +2,35 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import DatePicker from "react-datepicker";
-import { GoogleMap, LoadScript, Polyline } from "@react-google-maps/api";
+import {
+	GoogleMap,
+	LoadScript,
+	Marker,
+	Polyline
+} from "@react-google-maps/api";
 import axios from "axios";
 
 // Components
 
 // Assets
-import "react-datepicker/dist/react-datepicker.css";
 
 // Import actions
 import { getUserTrucks } from "../../actions/profileActions";
 
-class Historics extends Component {
+class LiveMap extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			selectedTruck: null,
-			startDate: new Date(),
-			endDate: new Date(),
 			mapCenter: {
 				lat: -3.745,
 				lng: -38.523
 			},
 			mapZoom: 7,
-			flightPath: [{ lat: -3.745, lng: -38.523 }]
+			flightPath: []
 		};
 		this.onClick = this.onClick.bind(this);
-		this.handleChangeStart = this.handleChangeStart.bind(this);
-		this.handleChangeEnd = this.handleChangeEnd.bind(this);
-		this.fetchHistorics = this.fetchHistorics.bind(this);
+		this.reloadMap = this.reloadMap.bind(this);
 	}
 	componentDidMount() {
 		this.props.getUserTrucks();
@@ -41,53 +40,38 @@ class Historics extends Component {
 			selectedTruck: truckname
 		});
 	}
-	handleChangeStart(date) {
-		this.setState({
-			startDate: date
-		});
-	}
-	handleChangeEnd(date) {
-		this.setState({
-			endDate: date
-		});
-	}
-	fetchHistorics() {
-		let sDate = this.state.startDate;
-		let sTime = `${sDate.getHours()}:${sDate.getMinutes()}`;
-		sDate = `${sDate.getDate()}-${sDate.getMonth() +
-			1}-${sDate.getFullYear()} `;
-		let fDate = this.state.endDate;
-		let fTime = `${fDate.getHours()}:${fDate.getMinutes()}`;
-		fDate = `${fDate.getDate()}-${fDate.getMonth() +
-			1}-${fDate.getFullYear()} `;
-
+	reloadMap() {
 		const data = {
-			truckname: this.state.selectedTruck,
-			startDate: sDate,
-			startTime: sTime,
-			endDate: fDate,
-			endTime: fTime
+			truckname: this.state.selectedTruck
 		};
-		axios.post("/api/v1/user/getLocations", data).then(res => {
-			let locations = res.data.locations;
-			let paths = [];
-			let pathsTimes = [];
-			locations.map((path, index) => {
-				paths[index] = {
-					lat: parseFloat(path.Lat),
-					lng: parseFloat(path.Lng)
+		axios
+			.post("/api/v1/user/liveLocation", data)
+			.then(res => {
+				let location = res.data.location;
+				let latlng = {
+					lat: parseFloat(location.Lat),
+					lng: parseFloat(location.Lng)
 				};
-				pathsTimes[index] = {
-					time: path.Time
-				};
-				return 0;
+				console.log(this.state.flightPath);
+
+				if (this.state.flightPath.length < 1) {
+					this.setState({
+						mapCenter: latlng,
+						flightPath: [latlng]
+					});
+				} else {
+					let newPath = [...this.state.flightPath, latlng];
+					this.setState({
+						mapCenter: latlng,
+						flightPath: newPath
+					});
+				}
+			})
+			.then(() => {
+				setTimeout(() => {
+					this.reloadMap();
+				}, 1000);
 			});
-			this.setState({
-				flightPath: paths,
-				mapCenter: paths[0],
-				mapZoom: 15
-			});
-		});
 	}
 
 	render() {
@@ -115,6 +99,12 @@ class Historics extends Component {
 							zoom={this.state.mapZoom}
 							center={this.state.mapCenter}
 						>
+							<Marker
+								onLoad={marker => {
+									this.reloadMap();
+								}}
+								position={this.state.mapCenter}
+							/>
 							<Polyline
 								path={this.state.flightPath}
 								options={{
@@ -128,18 +118,11 @@ class Historics extends Component {
 									editable: false,
 									visible: true,
 									radius: 30000,
-
 									zIndex: 1
 								}}
 							/>
 						</GoogleMap>
 					</LoadScript>
-					<div
-						className='btn btn-info btn-block mt-4'
-						onClick={this.fetchHistorics}
-					>
-						Show data
-					</div>
 				</div>
 			);
 		}
@@ -148,10 +131,10 @@ class Historics extends Component {
 				<div className='container'>
 					<div className='row'>
 						<div className='col-md-12'>
-							<h1 className='display-4'>Historics</h1>
+							<h1 className='display-4'>Live Map</h1>
 							<div>
 								<p className=' lead text-muted'>Welcome {user.user}</p>
-								<p>Choose the truck you want to see the historics</p>
+								<p>Choose the truck you want to track</p>
 								<div className='dropdown'>
 									<button
 										className='btn btn-secondary dropdown-toggle'
@@ -185,24 +168,6 @@ class Historics extends Component {
 										})}
 									</div>
 								</div>
-								<div>Date Picker</div>
-								<DatePicker
-									selected={this.state.startDate}
-									selectsStart
-									startDate={this.state.startDate}
-									endDate={this.state.endDate}
-									onChange={this.handleChangeStart}
-									showTimeSelect
-								/>
-
-								<DatePicker
-									selected={this.state.endDate}
-									selectsEnd
-									startDate={this.state.startDate}
-									endDate={this.state.endDate}
-									onChange={this.handleChangeEnd}
-									showTimeSelect
-								/>
 								{map}
 							</div>
 						</div>
@@ -213,7 +178,7 @@ class Historics extends Component {
 	}
 }
 
-Historics.propTypes = {
+LiveMap.propTypes = {
 	auth: PropTypes.object.isRequired,
 	profile: PropTypes.object.isRequired,
 	getUserTrucks: PropTypes.func.isRequired
@@ -227,4 +192,4 @@ const mapStateToProps = state => ({
 export default connect(
 	mapStateToProps,
 	{ getUserTrucks }
-)(Historics);
+)(LiveMap);

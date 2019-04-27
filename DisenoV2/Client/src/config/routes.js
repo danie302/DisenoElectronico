@@ -9,6 +9,7 @@ import Login from "../components/login";
 import Register from "../components/register";
 import Dashboard from "../components/main/dashboard";
 import Historics from "../components/historics";
+import LiveMap from "../components/liveMap";
 import AddTrucks from "../components/addTrucks";
 import PrivateRoute from "../utils/privateRoutes";
 import Page404 from "../components/page404";
@@ -21,6 +22,7 @@ const AppRoutes = () => (
 			<Route path='/register' exact component={Register} />
 			<PrivateRoute path='/dashboard' exact component={Dashboard} />
 			<PrivateRoute path='/historics' exact component={Historics} />
+			<PrivateRoute path='/real-time' exact component={LiveMap} />
 			<PrivateRoute path='/add-truck' exact component={AddTrucks} />
 			<Route component={Page404} />
 		</Switch>
