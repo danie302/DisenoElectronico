@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       post '/user/addTruck', to: 'users#addTruck'
       post '/user/addLocation', to: 'users#addLocation'
       get '/user/getTrucks', to: 'users#getTrucks'
+      post '/user/getLocations', to: 'users#getLocations'
     end
   end
 end

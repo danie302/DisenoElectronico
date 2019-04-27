@@ -68,7 +68,7 @@ module Api
                         @trucks = Truck.where(user_id: @tokenDecode[:id])
                         render json: {status: "Success", trucks: @trucks}, status: :ok
                     else
-                        render json: {status: "Error", trucks: @trucks.errors}, status: :ok
+                        render json: {status: "Error", errors: @trucks.errors}, status: :ok
                     end
                 else
                     render json: {status:"Error", error: "Unauthorized"}, status: :ok
@@ -87,6 +87,23 @@ module Api
                     Vel: params[:vel]
                 )
                 render json: {status:"Success", msg:"Location Saved"}, status: :ok
+            end
+            def getLocations
+                # Get the token
+                @token = request.headers[:Authorization]
+                if @token
+                    # Find the user by its id
+                    @truck = Truck.find_by_truckname(params[:truckname])
+                    # If the truck exist
+                    if @truck
+                        @locations = Location.where(truck_id: @truck.id, Date: params[:startDate]..params[:endDate], Time: params[:startTime]..params[:endTime])
+                        render json: {status: "Success", locations: @locations}, status: :ok
+                    else
+                        render json: {status: "Error", errors: @locations.errors}, status: :ok
+                    end
+                else
+                    render json: {status:"Error", error: "Unauthorized"}, status: :ok
+                end
             end
             private
             def user_params
