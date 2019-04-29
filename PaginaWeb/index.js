@@ -12,9 +12,9 @@ const gpsModel = require("./models/syrusTracking");
 let d, data;
 
 // Middlewares
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(cors());
 
 server.on("error", err => {
 	console.log(`server error:\n${err.stack}`);
@@ -58,7 +58,7 @@ server.on("message", (msg, rinfo) => {
 			syrusID: syrusID
 		};
 		console.log(data.date);
-		
+
 		gpsModel.insertRaster(data, (error, data) => {});
 		data = JSON.stringify(data);
 	}
@@ -91,7 +91,7 @@ app.get("/coord", (req, res) => {
 
 app.get("test", (req, res) => {
 	let dat = req.body;
-	if(dat){
+	if (dat) {
 		console.log(dat);
 		res.json(`Data received`);
 	}
