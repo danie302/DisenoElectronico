@@ -89,6 +89,14 @@ app.get("/coord", (req, res) => {
 	res.json(`${data}`);
 });
 
+app.get("test", (req, res) => {
+	let dat = req.body;
+	if(dat){
+		console.log(dat);
+		res.json(`Data received`);
+	}
+});
+
 app.listen(4000, () => {
 	console.log("Server on");
 });

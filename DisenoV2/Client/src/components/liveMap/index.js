@@ -48,13 +48,22 @@ class LiveMap extends Component {
 			.post("/api/v1/user/liveLocation", data)
 			.then(res => {
 				let location = res.data.location;
+				let parseLat;
+				let parseLng;
+				if (location != null) {
+					parseLat = parseFloat(location.Lat);
+					parseLng = parseFloat(location.Lng);
+				} else {
+					parseLat = 0;
+					parseLng = 0;
+				}
 				let latlng = {
-					lat: parseFloat(location.Lat),
-					lng: parseFloat(location.Lng)
+					lat: parseLat,
+					lng: parseLng
 				};
 				console.log(this.state.flightPath);
 
-				if (this.state.flightPath.length < 1) {
+				if (this.state.flightPath.length < 1 || latlng.lat < 1) {
 					this.setState({
 						mapCenter: latlng,
 						flightPath: [latlng]
