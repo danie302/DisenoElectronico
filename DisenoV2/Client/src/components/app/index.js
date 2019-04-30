@@ -10,19 +10,19 @@ import Footer from "../footer";
 import "./app.css";
 
 class App extends Component {
-  static propTypes = {
-    children: PropTypes.object.isRequired
-  };
-  render() {
-    const { children } = this.props;
-    return (
-      <div>
-        <Navbar />
-        {children}
-        <Footer />
-      </div>
-    );
-  }
+	static propTypes = {
+		children: PropTypes.object.isRequired
+	};
+	render() {
+		const { children } = this.props;
+		return (
+			<div className='Main'>
+				<Navbar />
+				{children}
+				<Footer />
+			</div>
+		);
+	}
 }
 
 export default App;

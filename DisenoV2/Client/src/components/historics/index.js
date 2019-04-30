@@ -32,6 +32,8 @@ class Historics extends Component {
 		this.handleChangeStart = this.handleChangeStart.bind(this);
 		this.handleChangeEnd = this.handleChangeEnd.bind(this);
 		this.fetchHistorics = this.fetchHistorics.bind(this);
+		this.polylineClick = this.polylineClick.bind(this);
+		this.mapClick = this.mapClick.bind(this);
 	}
 	componentDidMount() {
 		this.props.getUserTrucks();
@@ -84,10 +86,58 @@ class Historics extends Component {
 			});
 			this.setState({
 				flightPath: paths,
+				flightPath2: pathsTimes,
 				mapCenter: paths[0],
 				mapZoom: 15
 			});
 		});
+	}
+	polylineClick(point) {
+		let latlng = point.latLng;
+		console.log(latlng.lat);
+
+		let needle = {
+			minDistance: 9999999999,
+			index: -1,
+			latlng: null,
+			time: null,
+			rpm: null
+		};
+		this.state.flightPath.map((routePoint, index) => {
+			// http://www.movable-type.co.uk/scripts/latlong.html
+			const lat1 = latlng.lat;
+			const lon1 = latlng.lng;
+
+			const lat2 = routePoint.lat;
+			const lon2 = routePoint.lng;
+
+			const R = 6371e3; // earth radius in meters
+			const φ1 = lat1 * (Math.PI / 180);
+			const φ2 = lat2 * (Math.PI / 180);
+			const Δφ = (lat2 - lat1) * (Math.PI / 180);
+			const Δλ = (lon2 - lon1) * (Math.PI / 180);
+
+			const a =
+				Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+				Math.cos(φ1) * Math.cos(φ2) * (Math.sin(Δλ / 2) * Math.sin(Δλ / 2));
+
+			const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+			let dist = R * c;
+
+			if (dist < needle.minDistance) {
+				needle.minDistance = dist;
+				needle.index = index;
+				needle.latlng = routePoint;
+				needle.time = this.state.flightPath2[index].time;
+				needle.rpm = this.state.flightPath2[index].rpm;
+			}
+			return 0;
+		});
+		alert("The truck was here at: " + needle.time + " and with: " + needle.rpm);
+	}
+	mapClick(args) {
+		console.log("onClick args: ", parseFloat(args));
 	}
 
 	render() {
@@ -112,6 +162,9 @@ class Historics extends Component {
 								borderRadius: "10px",
 								margin: "4px"
 							}}
+							onClick={e => {
+								this.mapClick(e.latLng);
+							}}
 							zoom={this.state.mapZoom}
 							center={this.state.mapCenter}
 						>
@@ -127,9 +180,12 @@ class Historics extends Component {
 									draggable: false,
 									editable: false,
 									visible: true,
-									radius: 30000,
-
+									radius: 300,
 									zIndex: 1
+								}}
+								onClick={point => {
+									this.polylineClick(point);
+									console.log(point);
 								}}
 							/>
 						</GoogleMap>

@@ -13,6 +13,7 @@ import axios from "axios";
 // Components
 
 // Assets
+import "./livemap.css";
 
 // Import actions
 import { getUserTrucks } from "../../actions/profileActions";
@@ -27,7 +28,8 @@ class LiveMap extends Component {
 				lng: -38.523
 			},
 			mapZoom: 7,
-			flightPath: []
+			flightPath: [],
+			RPM: 0
 		};
 		this.onClick = this.onClick.bind(this);
 		this.reloadMap = this.reloadMap.bind(this);
@@ -37,7 +39,14 @@ class LiveMap extends Component {
 	}
 	onClick(truckname) {
 		this.setState({
-			selectedTruck: truckname
+			selectedTruck: truckname,
+			mapCenter: {
+				lat: -3.745,
+				lng: -38.523
+			},
+			mapZoom: 7,
+			flightPath: [],
+			RPM: 0
 		});
 	}
 	reloadMap() {
@@ -61,18 +70,19 @@ class LiveMap extends Component {
 					lat: parseLat,
 					lng: parseLng
 				};
-				console.log(this.state.flightPath);
-
+				let RPM = parseFloat(location.RPM);
 				if (this.state.flightPath.length < 1 || latlng.lat < 1) {
 					this.setState({
 						mapCenter: latlng,
-						flightPath: [latlng]
+						flightPath: [latlng],
+						RPM: RPM
 					});
 				} else {
 					let newPath = [...this.state.flightPath, latlng];
 					this.setState({
 						mapCenter: latlng,
-						flightPath: newPath
+						flightPath: newPath,
+						RPM: RPM
 					});
 				}
 			})
@@ -92,7 +102,7 @@ class LiveMap extends Component {
 			map = <div />;
 		} else {
 			map = (
-				<div>
+				<div className='LiveMapBox'>
 					<LoadScript
 						id='script-loader'
 						googleMapsApiKey='AIzaSyAaUgFuVypDeWug-2htEXKEssI7TpifSg8'
@@ -132,6 +142,13 @@ class LiveMap extends Component {
 							/>
 						</GoogleMap>
 					</LoadScript>
+					<div className='Stat-Box'>
+						<p1 className='Stat-title'>{this.state.selectedTruck} Info</p1>
+						<div className='line' />
+						<p1 className='Stat-rpm'>RPM: {this.state.RPM}</p1>
+						<p1 className='Stat-lat'>Latitude: {this.state.mapCenter.lat}</p1>
+						<p1 className='Stat-lng'>Longitude: {this.state.mapCenter.lng}</p1>
+					</div>
 				</div>
 			);
 		}
