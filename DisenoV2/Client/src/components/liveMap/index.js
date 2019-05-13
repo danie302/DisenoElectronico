@@ -45,11 +45,7 @@ class LiveMap extends Component {
 	componentDidMount() {
 		this.props.getUserTrucks();
 	}
-	componentWillUnmount() {
-		this.setState({
-			reload: false
-		});
-	}
+	componentWillUnmount() {}
 	onClick(truckname) {
 		this.setState({
 			selectedTruck: truckname,

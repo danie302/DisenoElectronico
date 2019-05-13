@@ -90,7 +90,8 @@ class Historics extends Component {
 					lng: parseFloat(path.Lng)
 				};
 				pathsTimes[index] = {
-					time: path.Time
+					time: path.Time,
+					rpm: path.RPM
 				};
 				return 0;
 			});
@@ -102,8 +103,6 @@ class Historics extends Component {
 			});
 		});
 		if (this.state.selectedTruck2 != null) {
-			console.log("Fetch second truck");
-
 			const data2 = {
 				truckname: this.state.selectedTruck2,
 				startDate: sDate,
@@ -121,7 +120,8 @@ class Historics extends Component {
 						lng: parseFloat(path.Lng)
 					};
 					pathsTimes[index] = {
-						time: path.Time
+						time: path.Time,
+						rpm: path.RPM
 					};
 					return 0;
 				});
@@ -172,6 +172,7 @@ class Historics extends Component {
 				needle.time = this.state.flightPath2[index].time;
 				needle.rpm = this.state.flightPath2[index].rpm;
 			}
+
 			return 0;
 		});
 		alert("The truck was here at: " + needle.time + " and with: " + needle.rpm);
