@@ -11,7 +11,9 @@ import setAuthToken from "../utils/setAuthToken";
 // Register User
 export const registerUser = (userData, history) => dispatch => {
 	axios
-		.post("http://34.197.229.47:3000/api/v1/user/register", userData)
+		.post("http://34.197.229.47:3000/api/v1/user/register", userData, {
+			headers: { "Access-Control-Allow-Origin": "http://34.197.229.47:3000/" }
+		})
 		.then(res => history.push("/login"))
 		.catch(err =>
 			dispatch({
@@ -23,7 +25,9 @@ export const registerUser = (userData, history) => dispatch => {
 
 export const loginUser = userData => dispatch => {
 	axios
-		.post("http://34.197.229.47:3000/api/v1/user/login", userData)
+		.post("http://34.197.229.47:3000/api/v1/user/login", userData, {
+			headers: { "Access-Control-Allow-Origin": "http://34.197.229.47:3000/" }
+		})
 		.then(res => {
 			// Save to Local Storage
 			const { token } = res.data;
