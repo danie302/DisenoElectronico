@@ -80,37 +80,11 @@ class Historics extends Component {
 			endDate: fDate,
 			endTime: fTime
 		};
-		axios.post("/api/v1/user/getLocations", data).then(res => {
-			let locations = res.data.locations;
-			let paths = [];
-			let pathsTimes = [];
-			locations.map((path, index) => {
-				paths[index] = {
-					lat: parseFloat(path.Lat),
-					lng: parseFloat(path.Lng)
-				};
-				pathsTimes[index] = {
-					time: path.Time,
-					rpm: path.RPM
-				};
-				return 0;
-			});
-			this.setState({
-				flightPath: paths,
-				flightPath2: pathsTimes,
-				mapCenter: paths[0],
-				mapZoom: 15
-			});
-		});
-		if (this.state.selectedTruck2 != null) {
-			const data2 = {
-				truckname: this.state.selectedTruck2,
-				startDate: sDate,
-				startTime: sTime,
-				endDate: fDate,
-				endTime: fTime
-			};
-			axios.post("/api/v1/user/getLocations", data2).then(res => {
+		axios
+			.post("http://34.197.229.47:3000/api/v1/user/getLocations", data, {
+				headers: { "Access-Control-Allow-Origin": "http://34.197.229.47:3000/" }
+			})
+			.then(res => {
 				let locations = res.data.locations;
 				let paths = [];
 				let pathsTimes = [];
@@ -126,11 +100,47 @@ class Historics extends Component {
 					return 0;
 				});
 				this.setState({
-					flightPathTruck2: paths,
-					flightPath2Truck2: pathsTimes,
-					coord2: paths[0]
+					flightPath: paths,
+					flightPath2: pathsTimes,
+					mapCenter: paths[0],
+					mapZoom: 15
 				});
 			});
+		if (this.state.selectedTruck2 != null) {
+			const data2 = {
+				truckname: this.state.selectedTruck2,
+				startDate: sDate,
+				startTime: sTime,
+				endDate: fDate,
+				endTime: fTime
+			};
+			axios
+				.post("http://34.197.229.47:3000/api/v1/user/getLocations", data2, {
+					headers: {
+						"Access-Control-Allow-Origin": "http://34.197.229.47:3000/"
+					}
+				})
+				.then(res => {
+					let locations = res.data.locations;
+					let paths = [];
+					let pathsTimes = [];
+					locations.map((path, index) => {
+						paths[index] = {
+							lat: parseFloat(path.Lat),
+							lng: parseFloat(path.Lng)
+						};
+						pathsTimes[index] = {
+							time: path.Time,
+							rpm: path.RPM
+						};
+						return 0;
+					});
+					this.setState({
+						flightPathTruck2: paths,
+						flightPath2Truck2: pathsTimes,
+						coord2: paths[0]
+					});
+				});
 		}
 	}
 	polylineClick(point) {

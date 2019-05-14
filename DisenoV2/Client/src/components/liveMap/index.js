@@ -74,7 +74,9 @@ class LiveMap extends Component {
 		};
 		// First Truck
 		axios
-			.post("/api/v1/user/liveLocation", data)
+			.post("http://34.197.229.47:3000/api/v1/user/liveLocation", data, {
+				headers: { "Access-Control-Allow-Origin": "http://34.197.229.47:3000/" }
+			})
 			.then(res => {
 				let location = res.data.location;
 				let parseLat;
@@ -115,7 +117,9 @@ class LiveMap extends Component {
 			});
 		// Second Truck
 		axios
-			.post("/api/v1/user/liveLocation", data2)
+			.post("http://34.197.229.47:3000/api/v1/user/liveLocation", data2, {
+				headers: { "Access-Control-Allow-Origin": "http://34.197.229.47:3000/" }
+			})
 			.then(res => {
 				let location = res.data.location;
 				let parseLat;

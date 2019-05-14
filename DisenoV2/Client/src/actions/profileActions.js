@@ -14,7 +14,9 @@ import {
 export const addTrucks = (truckData, history) => dispatch => {
 	console.log(truckData);
 	axios
-		.post("/api/v1/user/addTruck", truckData)
+		.post("http://34.197.229.47:3000/api/v1/user/addTruck", truckData, {
+			headers: { "Access-Control-Allow-Origin": "http://34.197.229.47:3000/" }
+		})
 		.then(res => history.push("/dashboard"));
 };
 
@@ -22,7 +24,9 @@ export const addTrucks = (truckData, history) => dispatch => {
 export const getUserTrucks = () => dispatch => {
 	dispatch(setProfileLoading());
 	axios
-		.get("/api/v1/user/getTrucks")
+		.get("http://34.197.229.47:3000/api/v1/user/getTrucks", {
+			headers: { "Access-Control-Allow-Origin": "http://34.197.229.47:3000/" }
+		})
 		.then(res => {
 			dispatch({
 				type: GET_TRUCKS,
