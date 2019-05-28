@@ -1,0 +1,21 @@
+.colm {
+  background-color: #43425d;
+  height: 100%;
+  padding-left: 0%;
+  padding-right: 0%;
+}
+
+.title {
+  border-bottom-color: #fafafa;
+  padding-bottom: 5%;
+  width: 100%;
+  padding-left: 15%;
+}
+
+.tag {
+  padding: 10px 20px;
+}
+
+.tag:hover {
+  background-color: #1f1f33;
+}
