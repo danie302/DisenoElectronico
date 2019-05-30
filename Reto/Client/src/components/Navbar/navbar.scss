@@ -1,45 +1,42 @@
 .navbar {
-  background-color: #5a55a5;
-  height: 70px;
+	background-color: #43425d;
+	height: 70px;
 }
 .brand {
-  color: whitesmoke;
+	color: whitesmoke;
+	font-weight: bold;
+	font-size: 2.5vw !important;
 }
-.brand:hover {
-  color: rgb(48, 44, 44);
-}
+
 .links {
-  color: whitesmoke;
+	color: whitesmoke;
 }
 .links:hover {
-  color: whitesmoke;
+	color: whitesmoke;
 }
 .navbar-toggler2 {
-  background-color: whitesmoke;
-  border-style: solid;
-  border-color: black;
-  border-width: 2px;
-  border-radius: 10px;
-  z-index: 999999;
+	background-color: whitesmoke;
+	border-style: solid;
+	border-color: black;
+	border-width: 2px;
+	border-radius: 10px;
+	z-index: 999999;
 }
 .collapse {
-  height: 100%;
+	height: 100%;
 }
 li {
-  height: 100%;
+	height: 100%;
 }
-
 @media (min-width: 992px) {
-  .navbar-toggler2 {
-    display: none;
-  }
+	.navbar-toggler2 {
+		display: none;
+	}
 }
-
 .but {
-  width: 100%;
-  height: 100%;
+	width: 100%;
+	height: 100%;
 }
-
 li:hover {
-  background-color: #43425d;
+	background-color: #1f1f33;
 }

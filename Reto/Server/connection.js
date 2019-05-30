@@ -13,7 +13,7 @@ let callsModel = {};
 
 callsModel.getCalls = callback => {
 	if (con) {
-		let query = "SELECT payload FROM diseno.comu";
+		let query = "SELECT payload, reg_date FROM diseno.comu";
 		con.query(query, (err, rows) => {
 			if (err) {
 				console.log(err);

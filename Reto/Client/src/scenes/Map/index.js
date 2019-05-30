@@ -44,8 +44,11 @@ class Map extends Component {
 		this.props.getLocations();
 		let groupCalls = [];
 		let callsID = [];
-		if (this.props.locations.locations !== []) {
-			this.props.locations.locations.map((loc, index) => {
+		let locations = this.props.locations.locations[0];
+		let dates = this.props.locations.locations[1];
+		let times = [];
+		if (locations !== undefined) {
+			locations.map((loc, index) => {
 				groupCalls[index] = {
 					lat: parseFloat(loc[0]),
 					lng: parseFloat(loc[1])
@@ -53,9 +56,22 @@ class Map extends Component {
 				callsID[index] = loc[2];
 				return 0;
 			});
+			dates.map((date, index) => {
+				let objDate = new Date(date);
+				dates[index] =
+					objDate.getUTCDay() +
+					"/" +
+					objDate.getUTCMonth() +
+					"/" +
+					objDate.getUTCFullYear();
+				times[index] = objDate.getUTCHours() + ":" + objDate.getUTCMinutes();
+				return 0;
+			});
 			this.setState({
 				calls: groupCalls,
-				callsIDs: callsID
+				callsIDs: callsID,
+				callsDates: dates,
+				callsTimes: times
 			});
 		}
 		setTimeout(() => {
@@ -71,7 +87,6 @@ class Map extends Component {
 		} else {
 			alert("Invalid coordinates");
 		}
-
 		this.setState({
 			mapCenter: {
 				lat: lat,
@@ -108,7 +123,7 @@ class Map extends Component {
 									<GoogleMap
 										id='map'
 										mapContainerClassName='Map--Map'
-										mapContainerStyle={{ height: "25vw", width: "75vw" }}
+										mapContainerStyle={{}}
 										zoom={this.state.mapZoom}
 										center={this.state.mapCenter}
 									>
@@ -134,20 +149,35 @@ class Map extends Component {
 									</GoogleMap>
 								</LoadScript>
 							</div>
-							<div className='Calls'>
-								{this.state.calls.map((location, id) => (
-									<div
-										key={id}
-										id={id}
-										className='Calls--Item'
-										onClick={() => {
-											this.focusMarker(location.lat, location.lng);
-										}}
-									>
-										Lat:{location.lat} | Lng:{location.lng}
-									</div>
-								))}
-							</div>
+							<table className='Calls'>
+								<thead>
+									<tr className='Table--Head'>
+										<th>ID</th>
+										<th>Date</th>
+										<th>Time</th>
+										<th>Latitude</th>
+										<th>Longitude</th>
+									</tr>
+								</thead>
+								<tbody className='Calls--Body'>
+									{this.state.calls.map((location, id) => (
+										<tr
+											key={id}
+											id={id}
+											className='Calls--Body--Item'
+											onClick={() => {
+												this.focusMarker(location.lat, location.lng);
+											}}
+										>
+											<td>{this.state.callsIDs[id]}</td>
+											<td>{this.state.callsDates[id]}</td>
+											<td>{this.state.callsTimes[id]}</td>
+											<td>{location.lat}</td>
+											<td>{location.lng}</td>
+										</tr>
+									))}
+								</tbody>
+							</table>
 						</div>
 					</div>
 				</div>
